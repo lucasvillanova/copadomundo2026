@@ -1,0 +1,613 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-status-bar-style" content="default" />
+<meta name="apple-mobile-web-app-title" content="Copa 2026" />
+<meta name="theme-color" content="#FFFFFF" />
+<title>Copa do Mundo 2026 — Painel</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Archivo:wght@500;600;700;800;900&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+<style>
+/* ============================================================================
+   COPA DO MUNDO 2026 — PAINEL
+   ----------------------------------------------------------------------------
+   Manutenção diária: você só edita o array MATCHES (no <script>).
+   - Cada jogo tem placar + lista de gols (autor, minuto, gol contra opcional).
+   - CLASSIFICAÇÃO, PONTOS, SALDO, TOTAL DE GOLS e ARTILHARIA são CALCULADOS
+     a partir dos jogos — nada é digitado "na mão".
+   - Bandeiras vêm de imagens (flagcdn.com), renderizam em qualquer sistema.
+   ========================================================================== */
+
+:root{
+  --pitch-deep:#FFFFFF; --pitch:#FFFFFF; --pitch-2:#F7F8FA;
+  --line:#E6E8EC; --line-soft:#EEF0F3;
+  --chalk:#181B20; --muted:#6A7280; --muted-2:#A6ACB6;
+  --accent:#2B59E0; --gold:#D99A00; --loss:#E5484D; --win:#2B59E0;
+  --grad:var(--accent);
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{
+  margin:0;
+  background:var(--pitch-deep);
+  color:var(--chalk);
+  font-family:"Inter",system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;
+  line-height:1.5;-webkit-font-smoothing:antialiased;
+}
+.wrap{max-width:1120px;margin:0 auto;padding:0 18px 80px}
+
+/* bandeiras */
+.flag,.fl{display:block;border-radius:3px;border:1px solid var(--line);object-fit:cover;background:#EEF0F3}
+.flag{width:34px;height:auto;flex:none}
+.fl{width:24px;height:auto;flex:none}
+
+/* ---------- Cabeçalho ---------- */
+header.top{position:relative;overflow:hidden;border-bottom:1px solid var(--line);
+  background:linear-gradient(180deg,#F7F8FA,#FFFFFF)}
+.top-inner{max-width:1120px;margin:0 auto;padding:30px 18px 24px;position:relative;z-index:2}
+.eyebrow{display:inline-flex;align-items:center;gap:8px;font-family:"Archivo";font-weight:700;
+  font-size:12px;letter-spacing:.18em;text-transform:uppercase;color:var(--pitch-deep);
+  background:var(--grad);padding:5px 12px;border-radius:999px}
+h1{font-family:"Anton",Impact,sans-serif;font-weight:400;letter-spacing:.01em;line-height:.92;
+  font-size:clamp(40px,9vw,86px);margin:14px 0 6px;text-transform:uppercase}
+h1 .yr{color:var(--accent)}
+.subhead{color:var(--muted);font-size:15px;max-width:660px}
+.hosts{display:flex;gap:16px;flex-wrap:wrap;align-items:center;margin-top:16px;font-size:13px;color:var(--muted);font-weight:500}
+.hosts span{display:inline-flex;align-items:center;gap:7px}
+.hosts b{color:var(--chalk);font-weight:600}
+.hosts .meta{color:var(--muted-2)}
+.updated{margin-top:16px;display:inline-flex;align-items:center;gap:8px;font-size:12.5px;color:var(--muted);
+  border:1px solid var(--line);border-radius:999px;padding:6px 13px;background:#F7F8FA}
+.dot{width:7px;height:7px;border-radius:50%;background:var(--win);animation:pulse 2.2s infinite}
+@keyframes pulse{0%{box-shadow:0 0 0 0 rgba(43,89,224,.5)}70%{box-shadow:0 0 0 8px rgba(43,89,224,0)}100%{box-shadow:0 0 0 0 rgba(43,89,224,0)}}
+
+/* ---------- KPIs ---------- */
+.kpis{display:grid;grid-template-columns:repeat(5,1fr);gap:12px;margin:26px 0 6px}
+.kpi{background:linear-gradient(180deg,var(--pitch-2),var(--pitch));border:1px solid var(--line);
+  border-radius:14px;padding:15px 16px;position:relative;overflow:hidden}
+.kpi::after{content:"";position:absolute;inset:0 auto 0 0;width:3px;background:var(--grad);opacity:.85}
+.kpi .lab{font-size:11px;letter-spacing:.13em;text-transform:uppercase;color:var(--muted);font-weight:600}
+.kpi .val{font-family:"Archivo";font-weight:900;font-size:30px;margin-top:6px;line-height:1;font-variant-numeric:tabular-nums}
+.kpi .val.sm{font-size:18px;letter-spacing:.01em}
+.kpi .val.gold{color:var(--accent)}
+.kpi .sub{font-size:11.5px;color:var(--muted);margin-top:4px}
+
+/* ---------- Abas ---------- */
+nav.tabs{display:flex;gap:6px;margin:26px 0 20px;flex-wrap:wrap}
+.tab{font-family:"Archivo";font-weight:700;font-size:14px;letter-spacing:.02em;color:var(--muted);
+  background:transparent;border:1px solid var(--line);padding:10px 18px;border-radius:11px;cursor:pointer;transition:.18s}
+.tab:hover{color:var(--chalk)}
+.tab.active{color:var(--pitch-deep);background:var(--grad);border-color:transparent}
+.view{display:none;animation:fade .35s ease}
+.view.active{display:block}
+@keyframes fade{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+
+/* ---------- Filtros ---------- */
+.filters{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-bottom:18px}
+.chip{font-family:"Archivo";font-weight:600;font-size:12.5px;color:var(--muted);border:1px solid var(--line);
+  background:transparent;border-radius:999px;padding:6px 13px;cursor:pointer;transition:.15s}
+.chip:hover{color:var(--chalk)}
+.chip.on{color:var(--chalk);border-color:var(--gold);background:rgba(255,194,71,.10)}
+.filters .sep{width:1px;height:20px;background:var(--line);margin:0 4px}
+.filters .gl{font-size:11px;text-transform:uppercase;letter-spacing:.12em;color:var(--muted-2);margin-right:2px}
+
+/* ---------- Jogos ---------- */
+.daygroup{margin-bottom:26px}
+.dayhead{display:flex;align-items:baseline;gap:12px;margin:0 0 12px;padding-bottom:8px;border-bottom:1px solid var(--line-soft)}
+.dayhead .d{font-family:"Archivo";font-weight:800;font-size:15px;letter-spacing:.04em;text-transform:uppercase}
+.dayhead .dn{color:var(--muted);font-size:12.5px}
+.match{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:10px;
+  background:linear-gradient(180deg,var(--pitch-2),var(--pitch));border:1px solid var(--line);
+  border-radius:14px;padding:14px 16px;margin-bottom:10px;transition:.18s;position:relative}
+.match:hover{border-color:#C7D0E4;transform:translateY(-1px)}
+.match .side{display:flex;align-items:center;gap:11px;min-width:0}
+.match .side.away{flex-direction:row-reverse;text-align:right}
+.match .tname{font-family:"Archivo";font-weight:700;font-size:15.5px;letter-spacing:.01em;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.match .center{display:flex;flex-direction:column;align-items:center;gap:5px;min-width:96px}
+.score{font-family:"Archivo";font-weight:900;font-size:26px;letter-spacing:.02em;font-variant-numeric:tabular-nums;display:flex;align-items:center;gap:10px}
+.score .x{color:var(--muted-2);font-size:18px}
+.kick{font-family:"Archivo";font-weight:800;font-size:20px;color:var(--chalk);font-variant-numeric:tabular-nums}
+.status{font-size:10px;letter-spacing:.13em;text-transform:uppercase;font-weight:700;padding:3px 9px;border-radius:999px}
+.status.done{color:var(--muted);border:1px solid var(--line)}
+.status.next{color:var(--accent);border:1px solid rgba(43,89,224,.30);background:rgba(43,89,224,.07)}
+.gtag{position:absolute;top:10px;left:14px;font-family:"Archivo";font-weight:800;font-size:10px;letter-spacing:.1em;color:var(--muted-2)}
+.winner{color:var(--chalk)}.dim{color:var(--muted)}
+.scorers{grid-column:1/-1;margin-top:11px;padding-top:11px;border-top:1px dashed var(--line-soft);
+  display:grid;grid-template-columns:1fr 1fr;gap:6px 18px;font-size:12.5px;color:var(--muted)}
+.scorers .col.away{text-align:right}
+.scorers .g{display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.scorers .g b{color:var(--chalk);font-weight:600}
+.scorers .min{color:var(--accent);font-weight:600;font-variant-numeric:tabular-nums}
+.scorers .oggoal b{color:var(--muted);font-weight:500}
+.note{grid-column:1/-1;margin-top:8px;font-size:11.5px;color:var(--gold);opacity:.95}
+.venue{grid-column:1/-1;margin-top:9px;font-size:11.5px;color:var(--muted-2)}
+
+/* ---------- Grupos ---------- */
+.groups{display:grid;grid-template-columns:repeat(2,1fr);gap:16px}
+.gcard{background:linear-gradient(180deg,var(--pitch-2),var(--pitch));border:1px solid var(--line);border-radius:16px;overflow:hidden}
+.gcard h3{margin:0;padding:13px 16px;font-family:"Anton",sans-serif;font-weight:400;font-size:18px;letter-spacing:.04em;
+  display:flex;align-items:center;gap:10px;border-bottom:1px solid var(--line);text-transform:uppercase}
+.gcard h3 .badge{font-family:"Archivo";font-weight:900;font-size:13px;color:var(--pitch-deep);background:var(--grad);
+  width:26px;height:26px;border-radius:8px;display:grid;place-items:center}
+table{width:100%;border-collapse:collapse;font-size:13px}
+thead th{font-family:"Archivo";font-weight:700;font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);text-align:center;padding:9px 4px;border-bottom:1px solid var(--line-soft)}
+thead th.team{text-align:left;padding-left:16px}
+tbody td{padding:9px 4px;text-align:center;font-variant-numeric:tabular-nums;border-bottom:1px solid var(--line-soft)}
+tbody tr:last-child td{border-bottom:0}
+td.team{text-align:left;padding-left:16px;font-family:"Archivo";font-weight:600;font-size:13.5px}
+td.team .tw{display:flex;align-items:center;gap:9px}
+td.team .pos{width:18px;color:var(--muted);font-size:12px;font-weight:700;flex:none}
+td.pts{font-family:"Archivo";font-weight:900;color:var(--chalk)}
+tbody tr.qual td.team .pos{color:var(--accent)}
+tbody tr.qual{box-shadow:inset 3px 0 0 var(--accent)}
+tbody tr.third{box-shadow:inset 3px 0 0 var(--muted-2)}
+.poswin{color:var(--win)}.posneg{color:var(--loss)}
+.glegend{display:flex;gap:16px;flex-wrap:wrap;margin:18px 2px 4px;font-size:12px;color:var(--muted)}
+.glegend i{display:inline-block;width:10px;height:10px;border-radius:2px;margin-right:6px;vertical-align:middle}
+
+/* ---------- Artilheiros ---------- */
+.scorerboard{background:linear-gradient(180deg,var(--pitch-2),var(--pitch));border:1px solid var(--line);border-radius:16px;overflow:hidden;max-width:760px}
+.srow{display:grid;grid-template-columns:54px 1fr auto;align-items:center;gap:14px;padding:13px 18px;border-bottom:1px solid var(--line-soft)}
+.srow:last-child{border-bottom:0}
+.srow .rk{font-family:"Anton",sans-serif;font-size:24px;color:var(--muted);text-align:center}
+.srow.top1 .rk{color:var(--gold)}.srow.top2 .rk{color:#8A929E}.srow.top3 .rk{color:#B06B2C}
+.srow .who{display:flex;align-items:center;gap:11px;min-width:0}
+.srow .who .fl{width:28px}
+.srow .who .nm{font-family:"Archivo";font-weight:700;font-size:15.5px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.srow .who .tm{font-size:12px;color:var(--muted)}
+.srow .goals{display:flex;align-items:center;gap:10px}
+.srow .bar{height:8px;width:120px;background:var(--line-soft);border-radius:999px;overflow:hidden}
+.srow .bar > i{display:block;height:100%;background:var(--grad);border-radius:999px}
+.srow .gc{font-family:"Archivo";font-weight:900;font-size:20px;font-variant-numeric:tabular-nums;min-width:22px;text-align:right}
+.srow .gc small{font-size:11px;color:var(--muted);font-weight:600;margin-left:4px}
+@media(max-width:560px){.srow .bar{width:64px}}
+
+.foot{margin-top:34px;padding-top:18px;border-top:1px solid var(--line-soft);font-size:12px;color:var(--muted-2);line-height:1.7}
+.foot b{color:var(--muted)}
+/* ====== TABLET ====== */
+@media(max-width:760px){
+  .wrap{padding:0 14px 70px}
+  .top-inner{padding:24px 14px 22px}
+  .kpis{grid-template-columns:repeat(2,1fr)}
+  .groups{grid-template-columns:1fr}
+}
+/* ====== CELULAR ====== */
+@media(max-width:560px){
+  h1{font-size:clamp(32px,11vw,56px)}
+  .subhead{font-size:13.5px}
+  .hosts{gap:10px 14px;font-size:12px}
+  .updated{font-size:11.5px}
+  .kpis{gap:9px}
+  .kpi{padding:12px}
+  .kpi .val{font-size:24px}
+  .kpi .val.sm{font-size:15px}
+  .kpi .lab{font-size:10px;letter-spacing:.1em}
+  nav.tabs{gap:5px}
+  .tab{padding:9px 12px;font-size:13px;flex:1 1 auto;text-align:center}
+
+  /* cards de jogo: nomes quebram em 2 linhas em vez de cortar */
+  .match{padding:30px 12px 13px;gap:7px}
+  .match .side{gap:8px}
+  .flag{width:26px}
+  .match .tname{font-size:13px;white-space:normal;line-height:1.15;overflow:visible}
+  .match .center{min-width:62px}
+  .score{font-size:22px;gap:7px}
+  .score .x{font-size:15px}
+  .kick{font-size:17px}
+  .gtag{top:9px;left:12px}
+  .status{font-size:9px;padding:2px 7px}
+  .scorers{gap:5px 12px;font-size:11.5px;margin-top:9px;padding-top:9px}
+  .scorers .g{white-space:normal}
+  .venue,.note{font-size:11px}
+
+  /* filtros */
+  .filters{gap:6px}
+  .chip{padding:5px 11px;font-size:12px}
+
+  /* tabelas dos grupos: oculta GP/GC e compacta o resto */
+  .opt{display:none}
+  .gcard h3{font-size:16px;padding:11px 14px}
+  thead th{font-size:10px;padding:8px 3px}
+  thead th.team,td.team{padding-left:12px}
+  tbody td{padding:8px 3px;font-size:12.5px}
+  td.team{font-size:12.5px}
+  td.team .tw{gap:7px}
+  td.team .pos{width:14px;font-size:11px}
+  td.team .fl{width:20px}
+
+  /* artilheiros */
+  .srow{grid-template-columns:40px 1fr auto;gap:10px;padding:12px 14px}
+  .srow .rk{font-size:20px}
+  .srow .who{gap:9px}
+  .srow .who .fl{width:24px}
+  .srow .who .nm{font-size:14px}
+  .srow .bar{width:56px}
+  .srow .gc{font-size:18px}
+}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="top-inner">
+    <span class="eyebrow">⚽ FIFA World Cup</span>
+    <h1>Copa do Mundo <span class="yr">2026</span></h1>
+    <p class="subhead">Painel da fase de grupos — resultados, classificação por grupo e artilheiros. Tabela e artilharia calculadas automaticamente a partir dos jogos disputados.</p>
+    <div class="hosts" id="hosts"></div>
+    <div class="updated"><span class="dot"></span> Atualizado em <b style="color:var(--chalk);margin-left:2px">16/06/2026</b> · resultados completos até 15/06</div>
+    <div class="kpis" id="kpis"></div>
+  </div>
+</header>
+
+<div class="wrap">
+  <nav class="tabs">
+    <button class="tab active" data-view="jogos">Jogos &amp; horários</button>
+    <button class="tab" data-view="grupos">Grupos</button>
+    <button class="tab" data-view="artilheiros">Artilheiros</button>
+  </nav>
+
+  <section class="view active" id="view-jogos">
+    <div class="filters" id="filters">
+      <button class="chip on" data-f="status" data-v="todos">Todos</button>
+      <button class="chip" data-f="status" data-v="done">Resultados</button>
+      <button class="chip" data-f="status" data-v="next">Próximos</button>
+      <span class="sep"></span>
+      <span class="gl">Grupo</span>
+      <span id="groupChips"></span>
+    </div>
+    <div id="matchList"></div>
+  </section>
+
+  <section class="view" id="view-grupos">
+    <div class="groups" id="groupTables"></div>
+    <div class="glegend">
+      <span><i style="background:var(--accent)"></i>1º e 2º — classificação direta (32 avos)</span>
+      <span><i style="background:var(--muted-2)"></i>3º — pode avançar (8 melhores terceiros)</span>
+    </div>
+  </section>
+
+  <section class="view" id="view-artilheiros">
+    <div class="scorerboard" id="scorerBoard"></div>
+    <p class="note" id="scorerNote" style="max-width:760px"></p>
+  </section>
+
+  <div class="foot">
+    <b>Fontes:</b> relatórios oficiais da FIFA, Wikipédia (2026 FIFA World Cup) e veículos esportivos — placares conferidos (46 gols em 16 jogos até 15/06). Bandeiras: flagcdn.com.<br>
+    <b>Como atualizar:</b> a cada dia, basta acrescentar os jogos no bloco <code>MATCHES</code> do código (placar + gols). Classificação, saldo, pontos, total de gols e artilharia se recalculam sozinhos.<br>
+    <b>Programação:</b> fase de grupos completa (1ª a 3ª rodada), com data, horário de Brasília e estádio conforme a tabela oficial da FIFA. Madrugadas brasileiras aparecem como 00h/01h.
+  </div>
+</div>
+
+<script>
+/* ============================================================================
+   1) SELEÇÕES → CÓDIGO ISO (para a bandeira em flagcdn.com)
+   ========================================================================== */
+const CODE = {
+  "México":"mx","África do Sul":"za","Coreia do Sul":"kr","Tchéquia":"cz",
+  "Canadá":"ca","Catar":"qa","Suíça":"ch","Bósnia e Herzegovina":"ba",
+  "Brasil":"br","Marrocos":"ma","Haiti":"ht","Escócia":"gb-sct",
+  "Estados Unidos":"us","Paraguai":"py","Austrália":"au","Turquia":"tr",
+  "Alemanha":"de","Curaçao":"cw","Costa do Marfim":"ci","Equador":"ec",
+  "Holanda":"nl","Japão":"jp","Tunísia":"tn","Suécia":"se",
+  "Bélgica":"be","Egito":"eg","Irã":"ir","Nova Zelândia":"nz",
+  "Espanha":"es","Cabo Verde":"cv","Arábia Saudita":"sa","Uruguai":"uy",
+  "França":"fr","Senegal":"sn","Noruega":"no","Iraque":"iq",
+  "Argentina":"ar","Argélia":"dz","Áustria":"at","Jordânia":"jo",
+  "Portugal":"pt","Uzbequistão":"uz","Colômbia":"co","RD Congo":"cd",
+  "Inglaterra":"gb-eng","Croácia":"hr","Gana":"gh","Panamá":"pa"
+};
+const flagImg = (name, cls="fl") => {
+  const c = CODE[name] || "";
+  return `<img class="${cls}" loading="lazy" alt="${name}" src="https://flagcdn.com/${c}.svg"
+            onerror="this.style.visibility='hidden'">`;
+};
+
+/* ============================================================================
+   2) GRUPOS
+   ========================================================================== */
+const GROUPS = {
+  A:["México","África do Sul","Coreia do Sul","Tchéquia"],
+  B:["Canadá","Catar","Suíça","Bósnia e Herzegovina"],
+  C:["Brasil","Marrocos","Haiti","Escócia"],
+  D:["Estados Unidos","Paraguai","Austrália","Turquia"],
+  E:["Alemanha","Curaçao","Costa do Marfim","Equador"],
+  F:["Holanda","Japão","Tunísia","Suécia"],
+  G:["Bélgica","Egito","Irã","Nova Zelândia"],
+  H:["Espanha","Cabo Verde","Arábia Saudita","Uruguai"],
+  I:["França","Senegal","Noruega","Iraque"],
+  J:["Argentina","Argélia","Áustria","Jordânia"],
+  K:["Portugal","Uzbequistão","Colômbia","RD Congo"],
+  L:["Inglaterra","Croácia","Gana","Panamá"]
+};
+
+/* ============================================================================
+   3) JOGOS  ← ÚNICO BLOCO QUE VOCÊ EDITA NA ATUALIZAÇÃO DIÁRIA
+   goals: {t:'h'|'a', p:'Autor', m:"32'", og:true(opcional gol contra)}
+   ========================================================================== */
+const MATCHES = [
+  /* ---- 11/06 ---- */
+  {g:"A",date:"2026-06-11",dl:"Quinta · 11 jun",venue:"Estádio Azteca · Cidade do México",home:"México",away:"África do Sul",played:true,hs:2,as:0,
+    goals:[{t:'h',p:"Quiñones",m:"9'"},{t:'h',p:"Raúl Jiménez",m:"67'"}]},
+  {g:"A",date:"2026-06-11",dl:"Quinta · 11 jun",venue:"Estádio Guadalajara",home:"Coreia do Sul",away:"Tchéquia",played:true,hs:2,as:1,
+    goals:[{t:'a',p:"Krejčí",m:"58'"},{t:'h',p:"Hwang In-Beom",m:"66'"},{t:'h',p:"Oh Hyeon-Gyu",m:"79'"}]},
+
+  /* ---- 12/06 ---- */
+  {g:"B",date:"2026-06-12",dl:"Sexta · 12 jun",venue:"Toronto Stadium (BMO Field)",home:"Canadá",away:"Bósnia e Herzegovina",played:true,hs:1,as:1,
+    goals:[{t:'a',p:"Jovo Lukić",m:"21'"},{t:'h',p:"Cyle Larin",m:"78'"}]},
+  {g:"D",date:"2026-06-12",dl:"Sexta · 12 jun",venue:"Los Angeles Stadium (SoFi)",home:"Estados Unidos",away:"Paraguai",played:true,hs:4,as:1,
+    goals:[{t:'h',p:"Bobadilla",m:"7'",og:true},{t:'h',p:"Folarin Balogun",m:"31'"},{t:'h',p:"Folarin Balogun",m:"45'+"},{t:'h',p:"Reyna",m:"2ºT"},{t:'a',p:"Maurício",m:"72'"}]},
+
+  /* ---- 13/06 ---- */
+  {g:"B",date:"2026-06-13",dl:"Sábado · 13 jun",venue:"San Francisco Bay Stadium (Levi's)",home:"Catar",away:"Suíça",played:true,hs:1,as:1,
+    goals:[{t:'a',p:"Breel Embolo",m:"17'"},{t:'h',p:"Muheim",m:"90'+4",og:true}],
+    note:"Gol do Catar registrado como gol contra (Muheim) no relatório da FIFA; algumas fontes creditam a Khoukhi."},
+  {g:"C",date:"2026-06-13",dl:"Sábado · 13 jun",venue:"New York/New Jersey Stadium (MetLife)",home:"Brasil",away:"Marrocos",played:true,hs:1,as:1,
+    goals:[{t:'a',p:"Ismael Saibari",m:"21'"},{t:'h',p:"Vinícius Júnior",m:"32'"}]},
+  {g:"C",date:"2026-06-13",dl:"Sábado · 13 jun",venue:"Boston Stadium (Gillette)",home:"Escócia",away:"Haiti",played:true,hs:1,as:0,
+    goals:[{t:'h',p:"John McGinn",m:"28'"}]},
+  {g:"D",date:"2026-06-13",dl:"Sábado · 13 jun",venue:"BC Place · Vancouver",home:"Austrália",away:"Turquia",played:true,hs:2,as:0,
+    goals:[{t:'h',p:"Irankunda",m:"27'"},{t:'h',p:"Metcalfe",m:"2ºT"}]},
+
+  /* ---- 14/06 ---- */
+  {g:"E",date:"2026-06-14",dl:"Domingo · 14 jun",venue:"Houston Stadium (NRG)",home:"Alemanha",away:"Curaçao",played:true,hs:7,as:1,
+    goals:[{t:'h',p:"F. Nmecha",m:"6'"},{t:'a',p:"Comenencia",m:"21'"},{t:'h',p:"Schlotterbeck",m:"38'"},{t:'h',p:"Havertz",m:"45'+5 (p)"},{t:'h',p:"Musiala",m:"47'"},{t:'h',p:"N. Brown",m:"68'"},{t:'h',p:"Undav",m:"78'"},{t:'h',p:"Havertz",m:"88'"}]},
+  {g:"F",date:"2026-06-14",dl:"Domingo · 14 jun",venue:"Dallas Stadium (AT&T)",home:"Holanda",away:"Japão",played:true,hs:2,as:2,
+    goals:[{t:'h',p:"Van Dijk",m:"51'"},{t:'a',p:"Nakamura",m:"57'"},{t:'h',p:"Summerville",m:"64'"},{t:'a',p:"Kamada",m:"89'"}]},
+  {g:"E",date:"2026-06-14",dl:"Domingo · 14 jun",venue:"Philadelphia Stadium",home:"Costa do Marfim",away:"Equador",played:true,hs:1,as:0,
+    goals:[{t:'h',p:"Diallo",m:"90'"}]},
+  {g:"F",date:"2026-06-14",dl:"Domingo · 14 jun",venue:"Estádio Monterrey (BBVA)",home:"Suécia",away:"Tunísia",played:true,hs:5,as:1,
+    goals:[{t:'h',p:"Ayari",m:"6'"},{t:'h',p:"Alexander Isak",m:"30'"},{t:'a',p:"Rekik",m:"42'"},{t:'h',p:"Gyökeres",m:"59'"},{t:'h',p:"Svanberg",m:"84'"},{t:'h',p:"Ayari",m:"90'+"}]},
+
+  /* ====== 1ª RODADA — restante (horário de Brasília) ====== */
+  {g:"H",date:"2026-06-15",dl:"Segunda · 15 jun",venue:"Atlanta Stadium",home:"Espanha",away:"Cabo Verde",played:true,hs:0,as:0,goals:[]},
+  {g:"G",date:"2026-06-15",dl:"Segunda · 15 jun",venue:"Seattle Stadium",home:"Bélgica",away:"Egito",played:true,hs:1,as:1,
+    goals:[{t:'a',p:"Emam Ashour",m:"19'"},{t:'h',p:"Mohamed Hany",m:"2ºT",og:true}],
+    note:"Gol da Bélgica foi gol contra de Mohamed Hany (Egito), no início do 2º tempo."},
+  {g:"H",date:"2026-06-15",dl:"Segunda · 15 jun",venue:"Miami Stadium",home:"Arábia Saudita",away:"Uruguai",played:true,hs:1,as:1,
+    goals:[{t:'h',p:"Al-Amri",m:"41'"},{t:'a',p:"Maxi Araújo",m:"79'"}]},
+  {g:"G",date:"2026-06-15",dl:"Segunda · 15 jun",venue:"Los Angeles Stadium (SoFi)",home:"Irã",away:"Nova Zelândia",played:true,hs:2,as:2,
+    goals:[{t:'a',p:"Elijah Just",m:"6'"},{t:'h',p:"Rezaeian",m:"31'"},{t:'a',p:"Elijah Just",m:"54'"},{t:'h',p:"Mohebi",m:"63'"}]},
+
+  {g:"J",date:"2026-06-16",dl:"Terça · 16 jun",venue:"Kansas City Stadium",home:"Argentina",away:"Argélia",played:false,time:"14:00"},
+  {g:"I",date:"2026-06-16",dl:"Terça · 16 jun",venue:"New York/New Jersey Stadium (MetLife)",home:"França",away:"Senegal",played:false,time:"16:00"},
+  {g:"I",date:"2026-06-16",dl:"Terça · 16 jun",venue:"Boston Stadium (Gillette)",home:"Iraque",away:"Noruega",played:false,time:"19:00"},
+
+  {g:"J",date:"2026-06-17",dl:"Quarta · 17 jun",venue:"San Francisco Bay Stadium (Levi's)",home:"Áustria",away:"Jordânia",played:false,time:"01:00"},
+  {g:"K",date:"2026-06-17",dl:"Quarta · 17 jun",venue:"Houston Stadium (NRG)",home:"Portugal",away:"RD Congo",played:false,time:"14:00"},
+  {g:"L",date:"2026-06-17",dl:"Quarta · 17 jun",venue:"Dallas Stadium (AT&T)",home:"Inglaterra",away:"Croácia",played:false,time:"17:00"},
+  {g:"L",date:"2026-06-17",dl:"Quarta · 17 jun",venue:"Toronto Stadium (BMO Field)",home:"Gana",away:"Panamá",played:false,time:"20:00"},
+  {g:"K",date:"2026-06-17",dl:"Quarta · 17 jun",venue:"Estádio Azteca · Cidade do México",home:"Uzbequistão",away:"Colômbia",played:false,time:"23:00"},
+
+  /* ====== 2ª RODADA ====== */
+  {g:"A",date:"2026-06-18",dl:"Quinta · 18 jun",venue:"Atlanta Stadium",home:"Tchéquia",away:"África do Sul",played:false,time:"13:00"},
+  {g:"B",date:"2026-06-18",dl:"Quinta · 18 jun",venue:"Los Angeles Stadium (SoFi)",home:"Suíça",away:"Bósnia e Herzegovina",played:false,time:"16:00"},
+  {g:"B",date:"2026-06-18",dl:"Quinta · 18 jun",venue:"BC Place · Vancouver",home:"Canadá",away:"Catar",played:false,time:"19:00"},
+  {g:"A",date:"2026-06-18",dl:"Quinta · 18 jun",venue:"Estádio Guadalajara",home:"México",away:"Coreia do Sul",played:false,time:"22:00"},
+
+  {g:"D",date:"2026-06-19",dl:"Sexta · 19 jun",venue:"San Francisco Bay Stadium (Levi's)",home:"Turquia",away:"Paraguai",played:false,time:"01:00"},
+  {g:"D",date:"2026-06-19",dl:"Sexta · 19 jun",venue:"Seattle Stadium",home:"Estados Unidos",away:"Austrália",played:false,time:"16:00"},
+  {g:"C",date:"2026-06-19",dl:"Sexta · 19 jun",venue:"Boston Stadium (Gillette)",home:"Escócia",away:"Marrocos",played:false,time:"19:00"},
+  {g:"C",date:"2026-06-19",dl:"Sexta · 19 jun",venue:"Philadelphia Stadium",home:"Brasil",away:"Haiti",played:false,time:"22:00"},
+
+  {g:"F",date:"2026-06-20",dl:"Sábado · 20 jun",venue:"Houston Stadium (NRG)",home:"Holanda",away:"Suécia",played:false,time:"14:00"},
+  {g:"E",date:"2026-06-20",dl:"Sábado · 20 jun",venue:"Toronto Stadium (BMO Field)",home:"Alemanha",away:"Costa do Marfim",played:false,time:"17:00"},
+  {g:"E",date:"2026-06-20",dl:"Sábado · 20 jun",venue:"Kansas City Stadium",home:"Equador",away:"Curaçao",played:false,time:"21:00"},
+
+  {g:"F",date:"2026-06-21",dl:"Domingo · 21 jun",venue:"Estádio Monterrey (BBVA)",home:"Tunísia",away:"Japão",played:false,time:"01:00"},
+  {g:"H",date:"2026-06-21",dl:"Domingo · 21 jun",venue:"Atlanta Stadium",home:"Espanha",away:"Arábia Saudita",played:false,time:"13:00"},
+  {g:"G",date:"2026-06-21",dl:"Domingo · 21 jun",venue:"Los Angeles Stadium (SoFi)",home:"Bélgica",away:"Irã",played:false,time:"16:00"},
+  {g:"H",date:"2026-06-21",dl:"Domingo · 21 jun",venue:"Miami Stadium",home:"Uruguai",away:"Cabo Verde",played:false,time:"19:00"},
+  {g:"G",date:"2026-06-21",dl:"Domingo · 21 jun",venue:"BC Place · Vancouver",home:"Nova Zelândia",away:"Egito",played:false,time:"22:00"},
+
+  {g:"J",date:"2026-06-22",dl:"Segunda · 22 jun",venue:"Dallas Stadium (AT&T)",home:"Argentina",away:"Áustria",played:false,time:"14:00"},
+  {g:"I",date:"2026-06-22",dl:"Segunda · 22 jun",venue:"Philadelphia Stadium",home:"França",away:"Iraque",played:false,time:"18:00"},
+  {g:"I",date:"2026-06-22",dl:"Segunda · 22 jun",venue:"New York/New Jersey Stadium (MetLife)",home:"Noruega",away:"Senegal",played:false,time:"21:00"},
+
+  {g:"J",date:"2026-06-23",dl:"Terça · 23 jun",venue:"San Francisco Bay Stadium (Levi's)",home:"Jordânia",away:"Argélia",played:false,time:"00:00"},
+  {g:"K",date:"2026-06-23",dl:"Terça · 23 jun",venue:"Houston Stadium (NRG)",home:"Portugal",away:"Uzbequistão",played:false,time:"14:00"},
+  {g:"L",date:"2026-06-23",dl:"Terça · 23 jun",venue:"Boston Stadium (Gillette)",home:"Inglaterra",away:"Gana",played:false,time:"17:00"},
+  {g:"L",date:"2026-06-23",dl:"Terça · 23 jun",venue:"Toronto Stadium (BMO Field)",home:"Panamá",away:"Croácia",played:false,time:"20:00"},
+  {g:"K",date:"2026-06-23",dl:"Terça · 23 jun",venue:"Estádio Guadalajara",home:"Colômbia",away:"RD Congo",played:false,time:"23:00"},
+
+  /* ====== 3ª RODADA (jogos simultâneos por grupo) ====== */
+  {g:"B",date:"2026-06-24",dl:"Quarta · 24 jun",venue:"BC Place · Vancouver",home:"Suíça",away:"Canadá",played:false,time:"16:00"},
+  {g:"B",date:"2026-06-24",dl:"Quarta · 24 jun",venue:"Seattle Stadium",home:"Bósnia e Herzegovina",away:"Catar",played:false,time:"16:00"},
+  {g:"C",date:"2026-06-24",dl:"Quarta · 24 jun",venue:"Miami Stadium",home:"Escócia",away:"Brasil",played:false,time:"19:00"},
+  {g:"C",date:"2026-06-24",dl:"Quarta · 24 jun",venue:"Atlanta Stadium",home:"Marrocos",away:"Haiti",played:false,time:"19:00"},
+  {g:"A",date:"2026-06-24",dl:"Quarta · 24 jun",venue:"Estádio Azteca · Cidade do México",home:"Tchéquia",away:"México",played:false,time:"22:00"},
+  {g:"A",date:"2026-06-24",dl:"Quarta · 24 jun",venue:"Estádio Monterrey (BBVA)",home:"África do Sul",away:"Coreia do Sul",played:false,time:"22:00"},
+
+  {g:"E",date:"2026-06-25",dl:"Quinta · 25 jun",venue:"New York/New Jersey Stadium (MetLife)",home:"Equador",away:"Alemanha",played:false,time:"17:00"},
+  {g:"E",date:"2026-06-25",dl:"Quinta · 25 jun",venue:"Philadelphia Stadium",home:"Curaçao",away:"Costa do Marfim",played:false,time:"17:00"},
+  {g:"F",date:"2026-06-25",dl:"Quinta · 25 jun",venue:"Dallas Stadium (AT&T)",home:"Japão",away:"Suécia",played:false,time:"20:00"},
+  {g:"F",date:"2026-06-25",dl:"Quinta · 25 jun",venue:"Kansas City Stadium",home:"Tunísia",away:"Holanda",played:false,time:"20:00"},
+  {g:"D",date:"2026-06-25",dl:"Quinta · 25 jun",venue:"Los Angeles Stadium (SoFi)",home:"Turquia",away:"Estados Unidos",played:false,time:"23:00"},
+  {g:"D",date:"2026-06-25",dl:"Quinta · 25 jun",venue:"San Francisco Bay Stadium (Levi's)",home:"Paraguai",away:"Austrália",played:false,time:"23:00"},
+
+  {g:"I",date:"2026-06-26",dl:"Sexta · 26 jun",venue:"Boston Stadium (Gillette)",home:"Noruega",away:"França",played:false,time:"16:00"},
+  {g:"I",date:"2026-06-26",dl:"Sexta · 26 jun",venue:"Toronto Stadium (BMO Field)",home:"Senegal",away:"Iraque",played:false,time:"16:00"},
+  {g:"H",date:"2026-06-26",dl:"Sexta · 26 jun",venue:"Houston Stadium (NRG)",home:"Cabo Verde",away:"Arábia Saudita",played:false,time:"21:00"},
+  {g:"H",date:"2026-06-26",dl:"Sexta · 26 jun",venue:"Estádio Guadalajara",home:"Uruguai",away:"Espanha",played:false,time:"21:00"},
+
+  {g:"G",date:"2026-06-27",dl:"Sábado · 27 jun",venue:"Seattle Stadium",home:"Egito",away:"Irã",played:false,time:"00:00"},
+  {g:"G",date:"2026-06-27",dl:"Sábado · 27 jun",venue:"BC Place · Vancouver",home:"Nova Zelândia",away:"Bélgica",played:false,time:"00:00"},
+  {g:"L",date:"2026-06-27",dl:"Sábado · 27 jun",venue:"New York/New Jersey Stadium (MetLife)",home:"Panamá",away:"Inglaterra",played:false,time:"18:00"},
+  {g:"L",date:"2026-06-27",dl:"Sábado · 27 jun",venue:"Philadelphia Stadium",home:"Croácia",away:"Gana",played:false,time:"18:00"},
+  {g:"K",date:"2026-06-27",dl:"Sábado · 27 jun",venue:"Miami Stadium",home:"Colômbia",away:"Portugal",played:false,time:"20:30"},
+  {g:"K",date:"2026-06-27",dl:"Sábado · 27 jun",venue:"Atlanta Stadium",home:"RD Congo",away:"Uzbequistão",played:false,time:"20:30"},
+  {g:"J",date:"2026-06-27",dl:"Sábado · 27 jun",venue:"Kansas City Stadium",home:"Argélia",away:"Áustria",played:false,time:"23:00"},
+  {g:"J",date:"2026-06-27",dl:"Sábado · 27 jun",venue:"Dallas Stadium (AT&T)",home:"Jordânia",away:"Argentina",played:false,time:"23:00"}
+];
+
+/* ============================================================================
+   4) MOTOR DE CÁLCULO
+   ========================================================================== */
+function standingsFor(letter){
+  const teams = {};
+  GROUPS[letter].forEach(t => teams[t] = {t,j:0,v:0,e:0,d:0,gp:0,gc:0,pts:0});
+  MATCHES.filter(m => m.g===letter && m.played).forEach(m=>{
+    const H=teams[m.home], A=teams[m.away]; if(!H||!A) return;
+    H.j++;A.j++; H.gp+=m.hs;H.gc+=m.as; A.gp+=m.as;A.gc+=m.hs;
+    if(m.hs>m.as){H.v++;H.pts+=3;A.d++;}
+    else if(m.hs<m.as){A.v++;A.pts+=3;H.d++;}
+    else {H.e++;A.e++;H.pts++;A.pts++;}
+  });
+  return Object.values(teams).map(o=>({...o,sg:o.gp-o.gc}))
+    .sort((a,b)=> b.pts-a.pts || b.sg-a.sg || b.gp-a.gp || a.t.localeCompare(b.t));
+}
+function topScorers(){
+  const tally={};
+  MATCHES.filter(m=>m.played && m.goals).forEach(m=>{
+    m.goals.forEach(gl=>{
+      if(gl.og || !gl.p || gl.p==="—") return;
+      const team = gl.t==='h'? m.home : m.away;
+      const key = gl.p+"|"+team; tally[key]=(tally[key]||0)+1;
+    });
+  });
+  return Object.entries(tally).map(([k,g])=>{const[p,team]=k.split("|");return{p,team,g};})
+    .sort((a,b)=> b.g-a.g || a.p.localeCompare(b.p));
+}
+
+/* ---------- Hosts ---------- */
+document.getElementById('hosts').innerHTML =
+  `<span>${flagImg("Canadá")} <b>Canadá</b></span>
+   <span>${flagImg("México")} <b>México</b></span>
+   <span>${flagImg("Estados Unidos")} <b>Estados Unidos</b></span>
+   <span class="meta">· 48 seleções · 12 grupos · 104 jogos · 11/jun a 19/jul</span>`;
+
+/* ---------- KPIs ---------- */
+function renderKPIs(){
+  const played = MATCHES.filter(m=>m.played);
+  const goals = played.reduce((s,m)=>s+m.hs+m.as,0);
+  const avg = played.length? (goals/played.length).toFixed(2).replace('.',',') : "0";
+  let best=null,bd=-1; played.forEach(m=>{const d=Math.abs(m.hs-m.as); if(d>bd){bd=d;best=m;}});
+  const ts = topScorers();
+  const lead = ts.length? ts.filter(s=>s.g===ts[0].g):[];
+  const leadName = lead.length>1 ? lead.length+" jogadores" : (lead[0]?.p || "—");
+  const rows = [
+    {lab:"Gols na Copa", val:goals, sub:`em ${played.length} jogos`},
+    {lab:"Partidas disputadas", val:played.length, sub:"de 104 no total"},
+    {lab:"Média gols/jogo", val:avg, sub:"fase de grupos"},
+    {lab:"Artilharia", val:(ts[0]?.g||0), sub:leadName, gold:true},
+    {lab:"Maior goleada", val:best? `${best.hs}×${best.as}`:"—", sub:best? `${best.home} × ${best.away}`:"", sm:true}
+  ];
+  document.getElementById('kpis').innerHTML = rows.map(r=>`
+    <div class="kpi"><div class="lab">${r.lab}</div>
+      <div class="val ${r.sm?'sm':''} ${r.gold?'gold':''}">${r.val}</div>
+      <div class="sub">${r.sub||""}</div></div>`).join('');
+}
+
+/* ---------- Jogos ---------- */
+let curStatus="todos", curGroup="all";
+function renderMatches(){
+  const list = document.getElementById('matchList');
+  let ms = MATCHES.slice().sort((a,b)=> a.date.localeCompare(b.date));
+  if(curStatus==="done") ms = ms.filter(m=>m.played);
+  if(curStatus==="next") ms = ms.filter(m=>!m.played);
+  if(curGroup!=="all") ms = ms.filter(m=>m.g===curGroup);
+  if(!ms.length){ list.innerHTML = `<p class="dim" style="padding:20px 0">Nenhum jogo para este filtro.</p>`; return; }
+  const byDay={}; ms.forEach(m=>{ (byDay[m.date] ||= {dl:m.dl,items:[]}).items.push(m); });
+  list.innerHTML = Object.keys(byDay).sort().map(d=>{
+    const day=byDay[d];
+    return `<div class="daygroup">
+      <div class="dayhead"><span class="d">${day.dl}</span><span class="dn">${day.items.length} jogo(s)</span></div>
+      ${day.items.map(matchCard).join('')}</div>`;
+  }).join('');
+}
+function matchCard(m){
+  let centerHTML='';
+  if(m.played){
+    const hw=m.hs>m.as, aw=m.as>m.hs;
+    centerHTML = `<div class="score"><span class="${hw?'winner':'dim'}">${m.hs}</span><span class="x">×</span><span class="${aw?'winner':'dim'}">${m.as}</span></div>
+      <span class="status done">Encerrado</span>`;
+  } else {
+    centerHTML = `<div class="kick">${m.time||'—'}</div><span class="status next">${m.time&&m.time!=='—'?'Brasília':'Agendado'}</span>`;
+  }
+  let scorersHTML='';
+  if(m.played){
+    const gh=(m.goals||[]).filter(g=>g.t==='h'), ga=(m.goals||[]).filter(g=>g.t==='a');
+    const fmt = g => `<span class="g ${g.og?'oggoal':''}"><b>${g.p}</b> <span class="min">${g.m}${g.og?' (c)':''}</span></span>`;
+    if(gh.length||ga.length){
+      scorersHTML = `<div class="scorers">
+        <div class="col home">${gh.map(fmt).join('')||'<span class="g dim">—</span>'}</div>
+        <div class="col away">${ga.map(fmt).join('')||'<span class="g dim">—</span>'}</div></div>`;
+    }
+  }
+  const noteHTML = m.note? `<div class="note">⚠️ ${m.note}</div>`:'';
+  const venueHTML = m.venue && m.venue!=='—'? `<div class="venue">📍 ${m.venue}</div>`:'';
+  return `<div class="match ${m.played?'played':''}">
+    <span class="gtag">GRUPO ${m.g}</span>
+    <div class="side home">${flagImg(m.home,'flag')}<span class="tname">${m.home}</span></div>
+    <div class="center">${centerHTML}</div>
+    <div class="side away">${flagImg(m.away,'flag')}<span class="tname">${m.away}</span></div>
+    ${scorersHTML}${noteHTML}${venueHTML}</div>`;
+}
+
+/* ---------- Grupos ---------- */
+function renderGroups(){
+  document.getElementById('groupTables').innerHTML = Object.keys(GROUPS).map(letter=>{
+    const rows = standingsFor(letter);
+    const trs = rows.map((r,i)=>{
+      const cls = i<2?'qual':(i===2?'third':'');
+      const sg = r.sg>0?`<span class="poswin">+${r.sg}</span>`:(r.sg<0?`<span class="posneg">${r.sg}</span>`:'0');
+      return `<tr class="${cls}">
+        <td class="team"><span class="tw"><span class="pos">${i+1}</span>${flagImg(r.t,'fl')}${r.t}</span></td>
+        <td>${r.j}</td><td>${r.v}</td><td>${r.e}</td><td>${r.d}</td>
+        <td class="opt">${r.gp}</td><td class="opt">${r.gc}</td><td>${sg}</td><td class="pts">${r.pts}</td></tr>`;
+    }).join('');
+    return `<div class="gcard">
+      <h3><span class="badge">${letter}</span>Grupo ${letter}</h3>
+      <table><thead><tr>
+        <th class="team">Seleção</th><th>J</th><th>V</th><th>E</th><th>D</th><th class="opt">GP</th><th class="opt">GC</th><th>SG</th><th>P</th>
+      </tr></thead><tbody>${trs}</tbody></table></div>`;
+  }).join('');
+}
+
+/* ---------- Artilheiros ---------- */
+function renderScorers(){
+  const ts = topScorers().slice(0,15);
+  const max = ts[0]?.g || 1;
+  const board = document.getElementById('scorerBoard');
+  if(!ts.length){ board.innerHTML='<div class="srow"><span class="dim" style="padding:8px">Sem gols registrados ainda.</span></div>'; return; }
+  board.innerHTML = ts.map((s,i)=>`
+    <div class="srow ${i===0?'top1':i===1?'top2':i===2?'top3':''}">
+      <div class="rk">${i+1}</div>
+      <div class="who">${flagImg(s.team,'fl')}
+        <div style="min-width:0"><div class="nm">${s.p}</div><div class="tm">${s.team}</div></div></div>
+      <div class="goals"><div class="bar"><i style="width:${(s.g/max*100)}%"></i></div>
+        <div class="gc">${s.g}<small>${s.g===1?'gol':'gols'}</small></div></div></div>`).join('');
+  document.getElementById('scorerNote').textContent =
+    "Artilharia calculada automaticamente a partir dos gols cadastrados (gols contra não contam). Líderes confirmados pela Chuteira de Ouro adidas: Balogun, Havertz e Ayari.";
+}
+
+/* ---------- Filtros & abas ---------- */
+document.getElementById('groupChips').innerHTML =
+  `<button class="chip on" data-f="group" data-v="all">Todos</button>` +
+  Object.keys(GROUPS).map(g=>`<button class="chip" data-f="group" data-v="${g}">${g}</button>`).join('');
+document.getElementById('filters').addEventListener('click', e=>{
+  const b=e.target.closest('.chip'); if(!b) return;
+  const f=b.dataset.f;
+  document.querySelectorAll(`.chip[data-f="${f}"]`).forEach(c=>c.classList.remove('on'));
+  b.classList.add('on');
+  if(f==='status') curStatus=b.dataset.v; else curGroup=b.dataset.v;
+  renderMatches();
+});
+document.querySelector('nav.tabs').addEventListener('click', e=>{
+  const t=e.target.closest('.tab'); if(!t) return;
+  document.querySelectorAll('.tab').forEach(x=>x.classList.remove('active'));
+  document.querySelectorAll('.view').forEach(x=>x.classList.remove('active'));
+  t.classList.add('active');
+  document.getElementById('view-'+t.dataset.view).classList.add('active');
+});
+
+/* ---------- Init ---------- */
+renderKPIs(); renderMatches(); renderGroups(); renderScorers();
+</script>
+</body>
+</html>
