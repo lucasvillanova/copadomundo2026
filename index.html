@@ -374,7 +374,7 @@ const MATCHES = [
   {g:"G",date:"2026-06-15",dl:"Segunda · 15 jun",venue:"Los Angeles Stadium (SoFi)",home:"Irã",away:"Nova Zelândia",played:true,hs:2,as:2,
     goals:[{t:'a',p:"Elijah Just",m:"6'"},{t:'h',p:"Rezaeian",m:"31'"},{t:'a',p:"Elijah Just",m:"54'"},{t:'h',p:"Mohebi",m:"63'"}]},
 
-  {g:"J",date:"2026-06-16",dl:"Terça · 16 jun",venue:"Kansas City Stadium",home:"Argentina",away:"Argélia",played:false,time:"14:00"},
+  {g:"J",date:"2026-06-16",dl:"Terça · 16 jun",venue:"Kansas City Stadium",home:"Argentina",away:"Argélia",played:false,time:"22:00"},
   {g:"I",date:"2026-06-16",dl:"Terça · 16 jun",venue:"New York/New Jersey Stadium (MetLife)",home:"França",away:"Senegal",played:false,time:"16:00"},
   {g:"I",date:"2026-06-16",dl:"Terça · 16 jun",venue:"Boston Stadium (Gillette)",home:"Iraque",away:"Noruega",played:false,time:"19:00"},
 
@@ -513,6 +513,9 @@ function renderMatches(){
   if(curGroup!=="all") ms = ms.filter(m=>m.g===curGroup);
   if(!ms.length){ list.innerHTML = `<p class="dim" style="padding:20px 0">Nenhum jogo para este filtro.</p>`; return; }
   const byDay={}; ms.forEach(m=>{ (byDay[m.date] ||= {dl:m.dl,items:[]}).items.push(m); });
+  // ordena os jogos de cada dia por horário (jogos já disputados mantêm a ordem de entrada)
+  const tkey=m=> (m.time && m.time!=='—') ? parseInt(m.time.replace(':',''),10) : -1;
+  Object.values(byDay).forEach(day=> day.items.sort((a,b)=> tkey(a)-tkey(b)));
   list.innerHTML = Object.keys(byDay).sort().map(d=>{
     const day=byDay[d];
     return `<div class="daygroup">
