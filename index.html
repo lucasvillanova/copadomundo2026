@@ -67,7 +67,7 @@ h1 .yr{color:var(--accent)}
 @keyframes pulse{0%{box-shadow:0 0 0 0 rgba(43,89,224,.5)}70%{box-shadow:0 0 0 8px rgba(43,89,224,0)}100%{box-shadow:0 0 0 0 rgba(43,89,224,0)}}
 
 /* ---------- KPIs ---------- */
-.kpis{display:grid;grid-template-columns:repeat(5,1fr);gap:12px;margin:26px 0 6px}
+.kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin:26px 0 6px}
 .kpi{background:linear-gradient(180deg,var(--pitch-2),var(--pitch));border:1px solid var(--line);
   border-radius:14px;padding:15px 16px;position:relative;overflow:hidden}
 .kpi::after{content:"";position:absolute;inset:0 auto 0 0;width:3px;background:var(--grad);opacity:.85}
@@ -169,6 +169,32 @@ tbody tr.third{box-shadow:inset 3px 0 0 var(--muted-2)}
 
 .foot{margin-top:34px;padding-top:18px;border-top:1px solid var(--line-soft);font-size:12px;color:var(--muted-2);line-height:1.7}
 .foot b{color:var(--muted)}
+
+/* ---------- Seleções (aba por time) ---------- */
+.team-picker{display:flex;align-items:center;gap:11px;margin-bottom:18px;flex-wrap:wrap}
+.team-picker label{font-family:"Archivo";font-weight:700;font-size:11px;letter-spacing:.13em;text-transform:uppercase;color:var(--muted)}
+.team-picker select{
+  font-family:"Archivo";font-weight:600;font-size:15px;color:var(--chalk);
+  background:#fff;border:1px solid var(--line);border-radius:11px;padding:11px 38px 11px 14px;cursor:pointer;min-width:240px;
+  -webkit-appearance:none;appearance:none;
+  background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8' fill='none'><path d='M1 1l5 5 5-5' stroke='%236A7280' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/></svg>");
+  background-repeat:no-repeat;background-position:right 14px center}
+.team-picker select:focus{outline:none;border-color:var(--accent)}
+
+.tsum{display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;
+  background:linear-gradient(180deg,var(--pitch-2),var(--pitch));border:1px solid var(--line);border-radius:16px;padding:16px 18px;margin-bottom:20px}
+.tsum-id{display:flex;align-items:center;gap:13px}
+.tsum-id .flag{width:48px}
+.tsum-name{font-family:"Anton",sans-serif;font-size:25px;letter-spacing:.02em;text-transform:uppercase;line-height:1}
+.tsum-grp{font-size:12.5px;color:var(--muted);margin-top:4px;font-weight:500}
+.tsum-grp b{color:var(--accent);font-weight:700}
+.tsum-stats{display:flex;gap:16px}
+.tsum-stats > div{text-align:center;display:flex;flex-direction:column}
+.tsum-stats b{font-family:"Archivo";font-weight:900;font-size:20px;font-variant-numeric:tabular-nums;line-height:1}
+.tsum-stats .big{color:var(--accent)}
+.tsum-stats span{font-size:9.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-top:4px}
+.tmatch{margin-bottom:14px}
+.tmatch-date{font-family:"Archivo";font-weight:700;font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted-2);margin:0 0 6px 2px}
 /* ====== TABLET ====== */
 @media(max-width:760px){
   .wrap{padding:0 14px 70px}
@@ -228,6 +254,14 @@ tbody tr.third{box-shadow:inset 3px 0 0 var(--muted-2)}
   .srow .who .nm{font-size:14px}
   .srow .bar{width:56px}
   .srow .gc{font-size:18px}
+
+  /* seleções */
+  .team-picker select{width:100%;min-width:0}
+  .tsum{flex-direction:column;align-items:flex-start;gap:14px;padding:15px 16px}
+  .tsum-name{font-size:21px}
+  .tsum-id .flag{width:40px}
+  .tsum-stats{width:100%;justify-content:space-between;gap:6px}
+  .tsum-stats b{font-size:18px}
 }
 @media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
 </style>
@@ -250,6 +284,7 @@ tbody tr.third{box-shadow:inset 3px 0 0 var(--muted-2)}
     <button class="tab active" data-view="jogos">Jogos &amp; horários</button>
     <button class="tab" data-view="grupos">Grupos</button>
     <button class="tab" data-view="artilheiros">Artilheiros</button>
+    <button class="tab" data-view="selecoes">Seleções</button>
   </nav>
 
   <section class="view active" id="view-jogos">
@@ -275,6 +310,15 @@ tbody tr.third{box-shadow:inset 3px 0 0 var(--muted-2)}
   <section class="view" id="view-artilheiros">
     <div class="scorerboard" id="scorerBoard"></div>
     <p class="note" id="scorerNote" style="max-width:760px"></p>
+  </section>
+
+  <section class="view" id="view-selecoes">
+    <div class="team-picker">
+      <label for="teamSel">Seleção</label>
+      <select id="teamSel"></select>
+    </div>
+    <div id="teamSummary"></div>
+    <div id="teamMatches"></div>
   </section>
 
   <div class="foot">
@@ -498,7 +542,6 @@ function renderKPIs(){
   const played = MATCHES.filter(m=>m.played);
   const goals = played.reduce((s,m)=>s+m.hs+m.as,0);
   const avg = played.length? (goals/played.length).toFixed(2).replace('.',',') : "0";
-  let best=null,bd=-1; played.forEach(m=>{const d=Math.abs(m.hs-m.as); if(d>bd){bd=d;best=m;}});
   const ts = topScorers();
   const lead = ts.length? ts.filter(s=>s.g===ts[0].g):[];
   const leadName = lead.length>1 ? lead.length+" jogadores" : (lead[0]?.p || "—");
@@ -506,8 +549,7 @@ function renderKPIs(){
     {lab:"Gols na Copa", val:goals, sub:`em ${played.length} jogos`},
     {lab:"Partidas disputadas", val:played.length, sub:"de 104 no total"},
     {lab:"Média gols/jogo", val:avg, sub:"fase de grupos"},
-    {lab:"Artilharia", val:(ts[0]?.g||0), sub:leadName, gold:true},
-    {lab:"Maior goleada", val:best? `${best.hs}×${best.as}`:"—", sub:best? `${best.home} × ${best.away}`:"", sm:true}
+    {lab:"Artilharia", val:(ts[0]?.g||0), sub:leadName, gold:true}
   ];
   document.getElementById('kpis').innerHTML = rows.map(r=>`
     <div class="kpi"><div class="lab">${r.lab}</div>
@@ -601,6 +643,49 @@ function renderScorers(){
     "Artilharia calculada automaticamente a partir dos gols cadastrados (gols contra não contam). Líderes confirmados pela Chuteira de Ouro adidas: Balogun, Havertz e Ayari.";
 }
 
+/* ---------- Seleções (aba por time) ---------- */
+const groupOf = team => Object.keys(GROUPS).find(g => GROUPS[g].includes(team));
+
+function renderTeamView(){
+  const team = document.getElementById('teamSel').value;
+  const g = groupOf(team);
+  const rows = standingsFor(g);
+  const r = rows.find(x=>x.t===team);
+  const pos = rows.findIndex(x=>x.t===team)+1;
+  const sg = r.sg>0?`+${r.sg}`:(''+r.sg);
+
+  document.getElementById('teamSummary').innerHTML = `
+    <div class="tsum">
+      <div class="tsum-id">${flagImg(team,'flag')}
+        <div><div class="tsum-name">${team}</div>
+        <div class="tsum-grp">Grupo <b>${g}</b> · ${r.j>0?`${pos}º lugar`:'ainda não jogou'}</div></div>
+      </div>
+      <div class="tsum-stats">
+        <div><b class="big">${r.pts}</b><span>pts</span></div>
+        <div><b>${r.j}</b><span>J</span></div>
+        <div><b>${r.v}</b><span>V</span></div>
+        <div><b>${r.e}</b><span>E</span></div>
+        <div><b>${r.d}</b><span>D</span></div>
+        <div><b>${r.gp}:${r.gc}</b><span>gols</span></div>
+        <div><b>${sg}</b><span>saldo</span></div>
+      </div>
+    </div>`;
+
+  const ms = MATCHES.filter(m => m.home===team || m.away===team)
+                    .sort((a,b)=> a.date.localeCompare(b.date));
+  document.getElementById('teamMatches').innerHTML = ms.map(m =>
+    `<div class="tmatch"><div class="tmatch-date">${m.dl}</div>${matchCard(m)}</div>`
+  ).join('');
+}
+
+(function initTeamPicker(){
+  const sel = document.getElementById('teamSel');
+  const teams = Object.values(GROUPS).flat().sort((a,b)=>a.localeCompare(b,'pt'));
+  sel.innerHTML = teams.map(t=>`<option value="${t}">${t}</option>`).join('');
+  sel.value = "Brasil";            // padrão: Brasil
+  sel.addEventListener('change', renderTeamView);
+})();
+
 /* ---------- Filtros & abas ---------- */
 document.getElementById('groupChips').innerHTML =
   `<button class="chip on" data-f="group" data-v="all">Todos</button>` +
@@ -622,7 +707,7 @@ document.querySelector('nav.tabs').addEventListener('click', e=>{
 });
 
 /* ---------- Init ---------- */
-renderKPIs(); renderMatches(); renderGroups(); renderScorers();
+renderKPIs(); renderMatches(); renderGroups(); renderScorers(); renderTeamView();
 </script>
 </body>
 </html>
