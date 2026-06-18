@@ -240,7 +240,7 @@ tbody tr.third{box-shadow:inset 3px 0 0 var(--muted-2)}
     <h1>Copa do Mundo <span class="yr">2026</span></h1>
     <p class="subhead">Painel da fase de grupos — resultados, classificação por grupo e artilheiros. Tabela e artilharia calculadas automaticamente a partir dos jogos disputados.</p>
     <div class="hosts" id="hosts"></div>
-    <div class="updated"><span class="dot"></span> Atualizado em <b style="color:var(--chalk);margin-left:2px">17/06/2026</b> · resultados completos até 16/06</div>
+    <div class="updated"><span class="dot"></span> Atualizado em <b style="color:var(--chalk);margin-left:2px">18/06/2026</b> · resultados completos até 17/06</div>
     <div class="kpis" id="kpis"></div>
   </div>
 </header>
@@ -278,7 +278,7 @@ tbody tr.third{box-shadow:inset 3px 0 0 var(--muted-2)}
   </section>
 
   <div class="foot">
-    <b>Fontes:</b> relatórios oficiais da FIFA, Wikipédia (2026 FIFA World Cup) e veículos esportivos — placares conferidos (62 gols em 20 jogos até 16/06). Bandeiras: flagcdn.com.<br>
+    <b>Fontes:</b> relatórios oficiais da FIFA, Wikipédia (2026 FIFA World Cup) e veículos esportivos — placares conferidos (75 gols em 24 jogos até 17/06). Bandeiras: flagcdn.com.<br>
     <b>Como atualizar:</b> a cada dia, basta acrescentar os jogos no bloco <code>MATCHES</code> do código (placar + gols). Classificação, saldo, pontos, total de gols e artilharia se recalculam sozinhos.<br>
     <b>Programação:</b> fase de grupos completa (1ª a 3ª rodada), com data, horário de Brasília e estádio conforme a tabela oficial da FIFA. Madrugadas brasileiras aparecem como 00h/01h.
   </div>
@@ -386,10 +386,15 @@ const MATCHES = [
   {g:"J",date:"2026-06-17",dl:"Quarta · 17 jun",venue:"San Francisco Bay Stadium (Levi's)",home:"Áustria",away:"Jordânia",played:true,hs:3,as:1,
     goals:[{t:'h',p:"Romano Schmid",m:"21'"},{t:'a',p:"Ali Olwan",m:"50'"},{t:'h',p:"Yazan Abu Arab",m:"81'",og:true},{t:'h',p:"Arnautović",m:"90'+7"}],
     note:"Olwan marcou o 1º gol da Jordânia em Copas do Mundo. 2º da Áustria foi gol contra de Yazan Abu Arab."},
-  {g:"K",date:"2026-06-17",dl:"Quarta · 17 jun",venue:"Houston Stadium (NRG)",home:"Portugal",away:"RD Congo",played:false,time:"14:00"},
-  {g:"L",date:"2026-06-17",dl:"Quarta · 17 jun",venue:"Dallas Stadium (AT&T)",home:"Inglaterra",away:"Croácia",played:false,time:"17:00"},
-  {g:"L",date:"2026-06-17",dl:"Quarta · 17 jun",venue:"Toronto Stadium (BMO Field)",home:"Gana",away:"Panamá",played:false,time:"20:00"},
-  {g:"K",date:"2026-06-17",dl:"Quarta · 17 jun",venue:"Estádio Azteca · Cidade do México",home:"Uzbequistão",away:"Colômbia",played:false,time:"23:00"},
+  {g:"K",date:"2026-06-17",dl:"Quarta · 17 jun",venue:"Houston Stadium (NRG)",home:"Portugal",away:"RD Congo",played:true,hs:1,as:1,
+    goals:[{t:'h',p:"João Neves",m:"6'"},{t:'a',p:"Yoane Wissa",m:"90'+5"}],
+    note:"Wissa marcou o 1º gol da RD Congo na história das Copas."},
+  {g:"L",date:"2026-06-17",dl:"Quarta · 17 jun",venue:"Dallas Stadium (AT&T)",home:"Inglaterra",away:"Croácia",played:true,hs:4,as:2,
+    goals:[{t:'h',p:"Harry Kane",m:"12'"},{t:'a',p:"Baturina",m:"35'"},{t:'h',p:"Harry Kane",m:"42'"},{t:'h',p:"Bellingham",m:"46'"},{t:'a',p:"Petar Musa",m:"50'"},{t:'h',p:"Rashford",m:"85'"}]},
+  {g:"L",date:"2026-06-17",dl:"Quarta · 17 jun",venue:"Toronto Stadium (BMO Field)",home:"Gana",away:"Panamá",played:true,hs:1,as:0,
+    goals:[{t:'h',p:"Caleb Yirenkyi",m:"90'+5"}]},
+  {g:"K",date:"2026-06-17",dl:"Quarta · 17 jun",venue:"Estádio Azteca · Cidade do México",home:"Uzbequistão",away:"Colômbia",played:true,hs:1,as:3,
+    goals:[{t:'a',p:"Daniel Muñoz",m:"40'"},{t:'h',p:"Fayzullaev",m:"60'"},{t:'a',p:"Luis Díaz",m:"65'"},{t:'a',p:"Campaz",m:"90'+8"}]},
 
   /* ====== 2ª RODADA ====== */
   {g:"A",date:"2026-06-18",dl:"Quinta · 18 jun",venue:"Atlanta Stadium",home:"Tchéquia",away:"África do Sul",played:false,time:"13:00"},
@@ -400,7 +405,7 @@ const MATCHES = [
   {g:"D",date:"2026-06-19",dl:"Sexta · 19 jun",venue:"San Francisco Bay Stadium (Levi's)",home:"Turquia",away:"Paraguai",played:false,time:"01:00"},
   {g:"D",date:"2026-06-19",dl:"Sexta · 19 jun",venue:"Seattle Stadium",home:"Estados Unidos",away:"Austrália",played:false,time:"16:00"},
   {g:"C",date:"2026-06-19",dl:"Sexta · 19 jun",venue:"Boston Stadium (Gillette)",home:"Escócia",away:"Marrocos",played:false,time:"19:00"},
-  {g:"C",date:"2026-06-19",dl:"Sexta · 19 jun",venue:"Philadelphia Stadium",home:"Brasil",away:"Haiti",played:false,time:"22:00"},
+  {g:"C",date:"2026-06-19",dl:"Sexta · 19 jun",venue:"Philadelphia Stadium",home:"Brasil",away:"Haiti",played:false,time:"21:30"},
 
   {g:"F",date:"2026-06-20",dl:"Sábado · 20 jun",venue:"Houston Stadium (NRG)",home:"Holanda",away:"Suécia",played:false,time:"14:00"},
   {g:"E",date:"2026-06-20",dl:"Sábado · 20 jun",venue:"Toronto Stadium (BMO Field)",home:"Alemanha",away:"Costa do Marfim",played:false,time:"17:00"},
