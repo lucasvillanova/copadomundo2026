@@ -274,7 +274,7 @@ tbody tr.third{box-shadow:inset 3px 0 0 var(--muted-2)}
     <h1>Copa do Mundo <span class="yr">2026</span></h1>
     <p class="subhead">Painel da fase de grupos — resultados, classificação por grupo e artilheiros. Tabela e artilharia calculadas automaticamente a partir dos jogos disputados.</p>
     <div class="hosts" id="hosts"></div>
-    <div class="updated"><span class="dot"></span> Atualizado em <b style="color:var(--chalk);margin-left:2px">18/06/2026</b> · resultados completos até 17/06</div>
+    <div class="updated"><span class="dot"></span> Atualizado em <b style="color:var(--chalk);margin-left:2px">25/06/2026</b> · resultados completos até 24/06</div>
     <div class="kpis" id="kpis"></div>
   </div>
 </header>
@@ -322,7 +322,7 @@ tbody tr.third{box-shadow:inset 3px 0 0 var(--muted-2)}
   </section>
 
   <div class="foot">
-    <b>Fontes:</b> relatórios oficiais da FIFA, Wikipédia (2026 FIFA World Cup) e veículos esportivos — placares conferidos (75 gols em 24 jogos até 17/06). Bandeiras: flagcdn.com.<br>
+    <b>Fontes:</b> relatórios oficiais da FIFA, Wikipédia (2026 FIFA World Cup) e veículos esportivos — placares conferidos (161 gols em 54 jogos até 24/06). Bandeiras: flagcdn.com.<br>
     <b>Como atualizar:</b> a cada dia, basta acrescentar os jogos no bloco <code>MATCHES</code> do código (placar + gols). Classificação, saldo, pontos, total de gols e artilharia se recalculam sozinhos.<br>
     <b>Programação:</b> fase de grupos completa (1ª a 3ª rodada), com data, horário de Brasília e estádio conforme a tabela oficial da FIFA. Madrugadas brasileiras aparecem como 00h/01h.
   </div>
@@ -375,122 +375,70 @@ const GROUPS = {
    goals: {t:'h'|'a', p:'Autor', m:"32'", og:true(opcional gol contra)}
    ========================================================================== */
 const MATCHES = [
-  /* ---- 11/06 ---- */
-  {g:"A",date:"2026-06-11",dl:"Quinta · 11 jun",venue:"Estádio Azteca · Cidade do México",home:"México",away:"África do Sul",played:true,hs:2,as:0,
-    goals:[{t:'h',p:"Quiñones",m:"9'"},{t:'h',p:"Raúl Jiménez",m:"67'"}]},
-  {g:"A",date:"2026-06-11",dl:"Quinta · 11 jun",venue:"Estádio Guadalajara",home:"Coreia do Sul",away:"Tchéquia",played:true,hs:2,as:1,
-    goals:[{t:'a',p:"Krejčí",m:"58'"},{t:'h',p:"Hwang In-Beom",m:"66'"},{t:'h',p:"Oh Hyeon-Gyu",m:"79'"}]},
-
-  /* ---- 12/06 ---- */
-  {g:"B",date:"2026-06-12",dl:"Sexta · 12 jun",venue:"Toronto Stadium (BMO Field)",home:"Canadá",away:"Bósnia e Herzegovina",played:true,hs:1,as:1,
-    goals:[{t:'a',p:"Jovo Lukić",m:"21'"},{t:'h',p:"Cyle Larin",m:"78'"}]},
-  {g:"D",date:"2026-06-12",dl:"Sexta · 12 jun",venue:"Los Angeles Stadium (SoFi)",home:"Estados Unidos",away:"Paraguai",played:true,hs:4,as:1,
-    goals:[{t:'h',p:"Bobadilla",m:"7'",og:true},{t:'h',p:"Folarin Balogun",m:"31'"},{t:'h',p:"Folarin Balogun",m:"45'+"},{t:'h',p:"Reyna",m:"2ºT"},{t:'a',p:"Maurício",m:"72'"}]},
-
-  /* ---- 13/06 ---- */
-  {g:"B",date:"2026-06-13",dl:"Sábado · 13 jun",venue:"San Francisco Bay Stadium (Levi's)",home:"Catar",away:"Suíça",played:true,hs:1,as:1,
-    goals:[{t:'a',p:"Breel Embolo",m:"17'"},{t:'h',p:"Muheim",m:"90'+4",og:true}],
-    note:"Gol do Catar registrado como gol contra (Muheim) no relatório da FIFA; algumas fontes creditam a Khoukhi."},
-  {g:"C",date:"2026-06-13",dl:"Sábado · 13 jun",venue:"New York/New Jersey Stadium (MetLife)",home:"Brasil",away:"Marrocos",played:true,hs:1,as:1,
-    goals:[{t:'a',p:"Ismael Saibari",m:"21'"},{t:'h',p:"Vinícius Júnior",m:"32'"}]},
-  {g:"C",date:"2026-06-13",dl:"Sábado · 13 jun",venue:"Boston Stadium (Gillette)",home:"Escócia",away:"Haiti",played:true,hs:1,as:0,
-    goals:[{t:'h',p:"John McGinn",m:"28'"}]},
-  {g:"D",date:"2026-06-13",dl:"Sábado · 13 jun",venue:"BC Place · Vancouver",home:"Austrália",away:"Turquia",played:true,hs:2,as:0,
-    goals:[{t:'h',p:"Irankunda",m:"27'"},{t:'h',p:"Metcalfe",m:"2ºT"}]},
-
-  /* ---- 14/06 ---- */
-  {g:"E",date:"2026-06-14",dl:"Domingo · 14 jun",venue:"Houston Stadium (NRG)",home:"Alemanha",away:"Curaçao",played:true,hs:7,as:1,
-    goals:[{t:'h',p:"F. Nmecha",m:"6'"},{t:'a',p:"Comenencia",m:"21'"},{t:'h',p:"Schlotterbeck",m:"38'"},{t:'h',p:"Havertz",m:"45'+5 (p)"},{t:'h',p:"Musiala",m:"47'"},{t:'h',p:"N. Brown",m:"68'"},{t:'h',p:"Undav",m:"78'"},{t:'h',p:"Havertz",m:"88'"}]},
-  {g:"F",date:"2026-06-14",dl:"Domingo · 14 jun",venue:"Dallas Stadium (AT&T)",home:"Holanda",away:"Japão",played:true,hs:2,as:2,
-    goals:[{t:'h',p:"Van Dijk",m:"51'"},{t:'a',p:"Nakamura",m:"57'"},{t:'h',p:"Summerville",m:"64'"},{t:'a',p:"Kamada",m:"89'"}]},
-  {g:"E",date:"2026-06-14",dl:"Domingo · 14 jun",venue:"Philadelphia Stadium",home:"Costa do Marfim",away:"Equador",played:true,hs:1,as:0,
-    goals:[{t:'h',p:"Diallo",m:"90'"}]},
-  {g:"F",date:"2026-06-14",dl:"Domingo · 14 jun",venue:"Estádio Monterrey (BBVA)",home:"Suécia",away:"Tunísia",played:true,hs:5,as:1,
-    goals:[{t:'h',p:"Ayari",m:"6'"},{t:'h',p:"Alexander Isak",m:"30'"},{t:'a',p:"Rekik",m:"42'"},{t:'h',p:"Gyökeres",m:"59'"},{t:'h',p:"Svanberg",m:"84'"},{t:'h',p:"Ayari",m:"90'+"}]},
-
-  /* ====== 1ª RODADA — restante (horário de Brasília) ====== */
+  {g:"A",date:"2026-06-11",dl:"Quinta · 11 jun",venue:"Estádio Azteca · Cidade do México",home:"México",away:"África do Sul",played:true,hs:2,as:0,goals:[{t:"h",p:"Julián Quiñones",m:"9'"},{t:"h",p:"Raúl Jiménez",m:"67'"}]},
+  {g:"A",date:"2026-06-11",dl:"Quinta · 11 jun",venue:"Estádio Guadalajara",home:"Coreia do Sul",away:"Tchéquia",played:true,hs:2,as:1,goals:[{t:"a",p:"Krejčí",m:"58'"},{t:"h",p:"Hwang In-Beom",m:"66'"},{t:"h",p:"Oh Hyeon-Gyu",m:"79'"}]},
+  {g:"B",date:"2026-06-12",dl:"Sexta · 12 jun",venue:"Toronto Stadium (BMO Field)",home:"Canadá",away:"Bósnia e Herzegovina",played:true,hs:1,as:1,goals:[{t:"a",p:"Jovo Lukić",m:"21'"},{t:"h",p:"Cyle Larin",m:"78'"}]},
+  {g:"D",date:"2026-06-12",dl:"Sexta · 12 jun",venue:"Los Angeles Stadium (SoFi)",home:"Estados Unidos",away:"Paraguai",played:true,hs:4,as:1,goals:[{t:"h",p:"Bobadilla",m:"7'",og:true},{t:"h",p:"Folarin Balogun",m:"31'"},{t:"h",p:"Folarin Balogun",m:"45'+"},{t:"h",p:"Reyna",m:"2ºT"},{t:"a",p:"Maurício",m:"72'"}]},
+  {g:"B",date:"2026-06-13",dl:"Sábado · 13 jun",venue:"San Francisco Bay Stadium (Levi's)",home:"Catar",away:"Suíça",played:true,hs:1,as:1,goals:[{t:"a",p:"Breel Embolo",m:"17'"},{t:"h",p:"Muheim",m:"90'+4",og:true}],note:"Gol do Catar registrado como gol contra (Muheim) no relatório da FIFA; algumas fontes creditam a Khoukhi."},
+  {g:"C",date:"2026-06-13",dl:"Sábado · 13 jun",venue:"New York/New Jersey Stadium (MetLife)",home:"Brasil",away:"Marrocos",played:true,hs:1,as:1,goals:[{t:"a",p:"Ismael Saibari",m:"21'"},{t:"h",p:"Vinícius Júnior",m:"32'"}]},
+  {g:"C",date:"2026-06-13",dl:"Sábado · 13 jun",venue:"Boston Stadium (Gillette)",home:"Escócia",away:"Haiti",played:true,hs:1,as:0,goals:[{t:"h",p:"John McGinn",m:"28'"}]},
+  {g:"D",date:"2026-06-13",dl:"Sábado · 13 jun",venue:"BC Place · Vancouver",home:"Austrália",away:"Turquia",played:true,hs:2,as:0,goals:[{t:"h",p:"Irankunda",m:"27'"},{t:"h",p:"Metcalfe",m:"2ºT"}]},
+  {g:"E",date:"2026-06-14",dl:"Domingo · 14 jun",venue:"Houston Stadium (NRG)",home:"Alemanha",away:"Curaçao",played:true,hs:7,as:1,goals:[{t:"h",p:"F. Nmecha",m:"6'"},{t:"a",p:"Comenencia",m:"21'"},{t:"h",p:"Schlotterbeck",m:"38'"},{t:"h",p:"Havertz",m:"45'+5 (p)"},{t:"h",p:"Musiala",m:"47'"},{t:"h",p:"N. Brown",m:"68'"},{t:"h",p:"Undav",m:"78'"},{t:"h",p:"Havertz",m:"88'"}]},
+  {g:"F",date:"2026-06-14",dl:"Domingo · 14 jun",venue:"Dallas Stadium (AT&T)",home:"Holanda",away:"Japão",played:true,hs:2,as:2,goals:[{t:"h",p:"Van Dijk",m:"51'"},{t:"a",p:"Nakamura",m:"57'"},{t:"h",p:"Summerville",m:"64'"},{t:"a",p:"Daichi Kamada",m:"89'"}]},
+  {g:"E",date:"2026-06-14",dl:"Domingo · 14 jun",venue:"Philadelphia Stadium",home:"Costa do Marfim",away:"Equador",played:true,hs:1,as:0,goals:[{t:"h",p:"Diallo",m:"90'"}]},
+  {g:"F",date:"2026-06-14",dl:"Domingo · 14 jun",venue:"Estádio Monterrey (BBVA)",home:"Suécia",away:"Tunísia",played:true,hs:5,as:1,goals:[{t:"h",p:"Ayari",m:"6'"},{t:"h",p:"Alexander Isak",m:"30'"},{t:"a",p:"Rekik",m:"42'"},{t:"h",p:"Gyökeres",m:"59'"},{t:"h",p:"Svanberg",m:"84'"},{t:"h",p:"Ayari",m:"90'+"}]},
   {g:"H",date:"2026-06-15",dl:"Segunda · 15 jun",venue:"Atlanta Stadium",home:"Espanha",away:"Cabo Verde",played:true,hs:0,as:0,goals:[]},
-  {g:"G",date:"2026-06-15",dl:"Segunda · 15 jun",venue:"Seattle Stadium",home:"Bélgica",away:"Egito",played:true,hs:1,as:1,
-    goals:[{t:'a',p:"Emam Ashour",m:"19'"},{t:'h',p:"Mohamed Hany",m:"2ºT",og:true}],
-    note:"Gol da Bélgica foi gol contra de Mohamed Hany (Egito), no início do 2º tempo."},
-  {g:"H",date:"2026-06-15",dl:"Segunda · 15 jun",venue:"Miami Stadium",home:"Arábia Saudita",away:"Uruguai",played:true,hs:1,as:1,
-    goals:[{t:'h',p:"Al-Amri",m:"41'"},{t:'a',p:"Maxi Araújo",m:"79'"}]},
-  {g:"G",date:"2026-06-15",dl:"Segunda · 15 jun",venue:"Los Angeles Stadium (SoFi)",home:"Irã",away:"Nova Zelândia",played:true,hs:2,as:2,
-    goals:[{t:'a',p:"Elijah Just",m:"6'"},{t:'h',p:"Rezaeian",m:"31'"},{t:'a',p:"Elijah Just",m:"54'"},{t:'h',p:"Mohebi",m:"63'"}]},
-
-  {g:"J",date:"2026-06-16",dl:"Terça · 16 jun",venue:"Kansas City Stadium",home:"Argentina",away:"Argélia",played:true,hs:3,as:0,
-    goals:[{t:'h',p:"Lionel Messi",m:"17'"},{t:'h',p:"Lionel Messi",m:"59'"},{t:'h',p:"Lionel Messi",m:"75'"}],
-    note:"Hat-trick de Messi, que chegou a 16 gols em Copas e igualou Klose como maior artilheiro da história dos Mundiais."},
-  {g:"I",date:"2026-06-16",dl:"Terça · 16 jun",venue:"New York/New Jersey Stadium (MetLife)",home:"França",away:"Senegal",played:true,hs:3,as:1,
-    goals:[{t:'h',p:"Mbappé",m:"66'"},{t:'h',p:"Barcola",m:"82'"},{t:'a',p:"Ibrahim Mbaye",m:"90'+5"},{t:'h',p:"Mbappé",m:"90'+6"}]},
-  {g:"I",date:"2026-06-16",dl:"Terça · 16 jun",venue:"Boston Stadium (Gillette)",home:"Iraque",away:"Noruega",played:true,hs:1,as:4,
-    goals:[{t:'a',p:"Haaland",m:"27'"},{t:'h',p:"Aymen Hussein",m:"38'"},{t:'a',p:"Haaland",m:"42'"},{t:'a',p:"Ostigard",m:"76'"},{t:'a',p:"Thorstvedt",m:"90'+5"}],
-    note:"4º gol norueguês: Thorstvedt; alguns veículos registram como gol contra de Aymen Hussein."},
-
-  {g:"J",date:"2026-06-17",dl:"Quarta · 17 jun",venue:"San Francisco Bay Stadium (Levi's)",home:"Áustria",away:"Jordânia",played:true,hs:3,as:1,
-    goals:[{t:'h',p:"Romano Schmid",m:"21'"},{t:'a',p:"Ali Olwan",m:"50'"},{t:'h',p:"Yazan Abu Arab",m:"81'",og:true},{t:'h',p:"Arnautović",m:"90'+7"}],
-    note:"Olwan marcou o 1º gol da Jordânia em Copas do Mundo. 2º da Áustria foi gol contra de Yazan Abu Arab."},
-  {g:"K",date:"2026-06-17",dl:"Quarta · 17 jun",venue:"Houston Stadium (NRG)",home:"Portugal",away:"RD Congo",played:true,hs:1,as:1,
-    goals:[{t:'h',p:"João Neves",m:"6'"},{t:'a',p:"Yoane Wissa",m:"90'+5"}],
-    note:"Wissa marcou o 1º gol da RD Congo na história das Copas."},
-  {g:"L",date:"2026-06-17",dl:"Quarta · 17 jun",venue:"Dallas Stadium (AT&T)",home:"Inglaterra",away:"Croácia",played:true,hs:4,as:2,
-    goals:[{t:'h',p:"Harry Kane",m:"12'"},{t:'a',p:"Baturina",m:"35'"},{t:'h',p:"Harry Kane",m:"42'"},{t:'h',p:"Bellingham",m:"46'"},{t:'a',p:"Petar Musa",m:"50'"},{t:'h',p:"Rashford",m:"85'"}]},
-  {g:"L",date:"2026-06-17",dl:"Quarta · 17 jun",venue:"Toronto Stadium (BMO Field)",home:"Gana",away:"Panamá",played:true,hs:1,as:0,
-    goals:[{t:'h',p:"Caleb Yirenkyi",m:"90'+5"}]},
-  {g:"K",date:"2026-06-17",dl:"Quarta · 17 jun",venue:"Estádio Azteca · Cidade do México",home:"Uzbequistão",away:"Colômbia",played:true,hs:1,as:3,
-    goals:[{t:'a',p:"Daniel Muñoz",m:"40'"},{t:'h',p:"Fayzullaev",m:"60'"},{t:'a',p:"Luis Díaz",m:"65'"},{t:'a',p:"Campaz",m:"90'+8"}]},
-
-  /* ====== 2ª RODADA ====== */
-  {g:"A",date:"2026-06-18",dl:"Quinta · 18 jun",venue:"Atlanta Stadium",home:"Tchéquia",away:"África do Sul",played:false,time:"13:00"},
-  {g:"B",date:"2026-06-18",dl:"Quinta · 18 jun",venue:"Los Angeles Stadium (SoFi)",home:"Suíça",away:"Bósnia e Herzegovina",played:false,time:"16:00"},
-  {g:"B",date:"2026-06-18",dl:"Quinta · 18 jun",venue:"BC Place · Vancouver",home:"Canadá",away:"Catar",played:false,time:"19:00"},
-  {g:"A",date:"2026-06-18",dl:"Quinta · 18 jun",venue:"Estádio Guadalajara",home:"México",away:"Coreia do Sul",played:false,time:"22:00"},
-
-  {g:"D",date:"2026-06-20",dl:"Sábado · 20 jun",venue:"San Francisco Bay Stadium (Levi's)",home:"Turquia",away:"Paraguai",played:false,time:"00:00"},
-  {g:"D",date:"2026-06-19",dl:"Sexta · 19 jun",venue:"Seattle Stadium",home:"Estados Unidos",away:"Austrália",played:false,time:"16:00"},
-  {g:"C",date:"2026-06-19",dl:"Sexta · 19 jun",venue:"Boston Stadium (Gillette)",home:"Escócia",away:"Marrocos",played:false,time:"19:00"},
-  {g:"C",date:"2026-06-19",dl:"Sexta · 19 jun",venue:"Philadelphia Stadium",home:"Brasil",away:"Haiti",played:false,time:"21:30"},
-
-  {g:"F",date:"2026-06-20",dl:"Sábado · 20 jun",venue:"Houston Stadium (NRG)",home:"Holanda",away:"Suécia",played:false,time:"14:00"},
-  {g:"E",date:"2026-06-20",dl:"Sábado · 20 jun",venue:"Toronto Stadium (BMO Field)",home:"Alemanha",away:"Costa do Marfim",played:false,time:"17:00"},
-  {g:"E",date:"2026-06-20",dl:"Sábado · 20 jun",venue:"Kansas City Stadium",home:"Equador",away:"Curaçao",played:false,time:"21:00"},
-
-  {g:"F",date:"2026-06-21",dl:"Domingo · 21 jun",venue:"Estádio Monterrey (BBVA)",home:"Tunísia",away:"Japão",played:false,time:"01:00"},
-  {g:"H",date:"2026-06-21",dl:"Domingo · 21 jun",venue:"Atlanta Stadium",home:"Espanha",away:"Arábia Saudita",played:false,time:"13:00"},
-  {g:"G",date:"2026-06-21",dl:"Domingo · 21 jun",venue:"Los Angeles Stadium (SoFi)",home:"Bélgica",away:"Irã",played:false,time:"16:00"},
-  {g:"H",date:"2026-06-21",dl:"Domingo · 21 jun",venue:"Miami Stadium",home:"Uruguai",away:"Cabo Verde",played:false,time:"19:00"},
-  {g:"G",date:"2026-06-21",dl:"Domingo · 21 jun",venue:"BC Place · Vancouver",home:"Nova Zelândia",away:"Egito",played:false,time:"22:00"},
-
-  {g:"J",date:"2026-06-22",dl:"Segunda · 22 jun",venue:"Dallas Stadium (AT&T)",home:"Argentina",away:"Áustria",played:false,time:"14:00"},
-  {g:"I",date:"2026-06-22",dl:"Segunda · 22 jun",venue:"Philadelphia Stadium",home:"França",away:"Iraque",played:false,time:"18:00"},
-  {g:"I",date:"2026-06-22",dl:"Segunda · 22 jun",venue:"New York/New Jersey Stadium (MetLife)",home:"Noruega",away:"Senegal",played:false,time:"21:00"},
-
-  {g:"J",date:"2026-06-23",dl:"Terça · 23 jun",venue:"San Francisco Bay Stadium (Levi's)",home:"Jordânia",away:"Argélia",played:false,time:"00:00"},
-  {g:"K",date:"2026-06-23",dl:"Terça · 23 jun",venue:"Houston Stadium (NRG)",home:"Portugal",away:"Uzbequistão",played:false,time:"14:00"},
-  {g:"L",date:"2026-06-23",dl:"Terça · 23 jun",venue:"Boston Stadium (Gillette)",home:"Inglaterra",away:"Gana",played:false,time:"17:00"},
-  {g:"L",date:"2026-06-23",dl:"Terça · 23 jun",venue:"Toronto Stadium (BMO Field)",home:"Panamá",away:"Croácia",played:false,time:"20:00"},
-  {g:"K",date:"2026-06-23",dl:"Terça · 23 jun",venue:"Estádio Guadalajara",home:"Colômbia",away:"RD Congo",played:false,time:"23:00"},
-
-  /* ====== 3ª RODADA (jogos simultâneos por grupo) ====== */
-  {g:"B",date:"2026-06-24",dl:"Quarta · 24 jun",venue:"BC Place · Vancouver",home:"Suíça",away:"Canadá",played:false,time:"16:00"},
-  {g:"B",date:"2026-06-24",dl:"Quarta · 24 jun",venue:"Seattle Stadium",home:"Bósnia e Herzegovina",away:"Catar",played:false,time:"16:00"},
-  {g:"C",date:"2026-06-24",dl:"Quarta · 24 jun",venue:"Miami Stadium",home:"Escócia",away:"Brasil",played:false,time:"19:00"},
-  {g:"C",date:"2026-06-24",dl:"Quarta · 24 jun",venue:"Atlanta Stadium",home:"Marrocos",away:"Haiti",played:false,time:"19:00"},
-  {g:"A",date:"2026-06-24",dl:"Quarta · 24 jun",venue:"Estádio Azteca · Cidade do México",home:"Tchéquia",away:"México",played:false,time:"22:00"},
-  {g:"A",date:"2026-06-24",dl:"Quarta · 24 jun",venue:"Estádio Monterrey (BBVA)",home:"África do Sul",away:"Coreia do Sul",played:false,time:"22:00"},
-
+  {g:"G",date:"2026-06-15",dl:"Segunda · 15 jun",venue:"Seattle Stadium",home:"Bélgica",away:"Egito",played:true,hs:1,as:1,goals:[{t:"a",p:"Emam Ashour",m:"19'"},{t:"h",p:"Mohamed Hany",m:"2ºT",og:true}],note:"Gol da Bélgica foi gol contra de Mohamed Hany (Egito), no início do 2º tempo."},
+  {g:"H",date:"2026-06-15",dl:"Segunda · 15 jun",venue:"Miami Stadium",home:"Arábia Saudita",away:"Uruguai",played:true,hs:1,as:1,goals:[{t:"h",p:"Al-Amri",m:"41'"},{t:"a",p:"Maximiliano Araújo",m:"79'"}]},
+  {g:"G",date:"2026-06-15",dl:"Segunda · 15 jun",venue:"Los Angeles Stadium (SoFi)",home:"Irã",away:"Nova Zelândia",played:true,hs:2,as:2,goals:[{t:"a",p:"Elijah Just",m:"6'"},{t:"h",p:"Rezaeian",m:"31'"},{t:"a",p:"Elijah Just",m:"54'"},{t:"h",p:"Mohebi",m:"63'"}]},
+  {g:"J",date:"2026-06-16",dl:"Terça · 16 jun",venue:"Kansas City Stadium",home:"Argentina",away:"Argélia",played:true,hs:3,as:0,goals:[{t:"h",p:"Lionel Messi",m:"17'"},{t:"h",p:"Lionel Messi",m:"59'"},{t:"h",p:"Lionel Messi",m:"75'"}],note:"Hat-trick de Messi, que chegou a 16 gols em Copas e igualou Klose como maior artilheiro da história dos Mundiais."},
+  {g:"I",date:"2026-06-16",dl:"Terça · 16 jun",venue:"New York/New Jersey Stadium (MetLife)",home:"França",away:"Senegal",played:true,hs:3,as:1,goals:[{t:"h",p:"Mbappé",m:"66'"},{t:"h",p:"Barcola",m:"82'"},{t:"a",p:"Ibrahim Mbaye",m:"90'+5"},{t:"h",p:"Mbappé",m:"90'+6"}]},
+  {g:"I",date:"2026-06-16",dl:"Terça · 16 jun",venue:"Boston Stadium (Gillette)",home:"Iraque",away:"Noruega",played:true,hs:1,as:4,goals:[{t:"a",p:"Erling Haaland",m:"29'"},{t:"h",p:"Aymen Hussein",m:"39'"},{t:"a",p:"Erling Haaland",m:"43'"},{t:"a",p:"Ostigård",m:"76'"},{t:"a",p:"Aymen Hussein",m:"90'+6",og:true}],note:"4º gol da Noruega: gol contra de Aymen Hussein (90'+6')."},
+  {g:"J",date:"2026-06-17",dl:"Quarta · 17 jun",venue:"San Francisco Bay Stadium (Levi's)",home:"Áustria",away:"Jordânia",played:true,hs:3,as:1,goals:[{t:"h",p:"Romano Schmid",m:"21'"},{t:"a",p:"Ali Olwan",m:"50'"},{t:"h",p:"Yazan Abu Arab",m:"81'",og:true},{t:"h",p:"Arnautović",m:"90'+7"}],note:"Olwan marcou o 1º gol da Jordânia em Copas do Mundo. 2º da Áustria foi gol contra de Yazan Abu Arab."},
+  {g:"K",date:"2026-06-17",dl:"Quarta · 17 jun",venue:"Houston Stadium (NRG)",home:"Portugal",away:"RD Congo",played:true,hs:1,as:1,goals:[{t:"h",p:"João Neves",m:"6'"},{t:"a",p:"Yoane Wissa",m:"90'+5"}],note:"Wissa marcou o 1º gol da RD Congo na história das Copas."},
+  {g:"L",date:"2026-06-17",dl:"Quarta · 17 jun",venue:"Dallas Stadium (AT&T)",home:"Inglaterra",away:"Croácia",played:true,hs:4,as:2,goals:[{t:"h",p:"Harry Kane",m:"12'"},{t:"a",p:"Baturina",m:"35'"},{t:"h",p:"Harry Kane",m:"42'"},{t:"h",p:"Bellingham",m:"46'"},{t:"a",p:"Petar Musa",m:"50'"},{t:"h",p:"Rashford",m:"85'"}]},
+  {g:"L",date:"2026-06-17",dl:"Quarta · 17 jun",venue:"Toronto Stadium (BMO Field)",home:"Gana",away:"Panamá",played:true,hs:1,as:0,goals:[{t:"h",p:"Caleb Yirenkyi",m:"90'+5"}]},
+  {g:"K",date:"2026-06-17",dl:"Quarta · 17 jun",venue:"Estádio Azteca · Cidade do México",home:"Uzbequistão",away:"Colômbia",played:true,hs:1,as:3,goals:[{t:"a",p:"Daniel Muñoz",m:"40'"},{t:"h",p:"Fayzullaev",m:"60'"},{t:"a",p:"Luis Díaz",m:"65'"},{t:"a",p:"Campaz",m:"90'+8"}]},
+  {g:"A",date:"2026-06-18",dl:"Quinta · 18 jun",venue:"Atlanta Stadium",home:"Tchéquia",away:"África do Sul",played:true,hs:1,as:1,goals:[{t:"h",p:"Sadílek",m:"6'"},{t:"a",p:"Mokoena",m:"83' (pen)"}]},
+  {g:"B",date:"2026-06-18",dl:"Quinta · 18 jun",venue:"Los Angeles Stadium (SoFi)",home:"Suíça",away:"Bósnia e Herzegovina",played:true,hs:4,as:1,goals:[{t:"h",p:"Johan Manzambi",m:"73'"},{t:"h",p:"Rubén Vargas",m:"83'"},{t:"h",p:"Johan Manzambi",m:"90'"},{t:"a",p:"Ermin Mahmić",m:"90'+3"},{t:"h",p:"Xhaka",m:"90'+5 (pen)"}],note:"Manzambi (20 anos), do banco, fez 2; Bósnia jogou com um a menos após expulsão."},
+  {g:"B",date:"2026-06-18",dl:"Quinta · 18 jun",venue:"BC Place · Vancouver",home:"Canadá",away:"Catar",played:true,hs:6,as:0,goals:[{t:"h",p:"Jonathan David",m:""},{t:"h",p:"Jonathan David",m:""},{t:"h",p:"Jonathan David",m:""},{t:"h",p:"Cyle Larin",m:""},{t:"h",p:"Nathan-Dylan Saliba",m:""},{t:"h",p:"Al-Mannai",m:"",og:true}],note:"1ª vitória do Canadá em Copas; hat-trick de Jonathan David."},
+  {g:"A",date:"2026-06-18",dl:"Quinta · 18 jun",venue:"Estádio Guadalajara",home:"México",away:"Coreia do Sul",played:true,hs:1,as:0,goals:[{t:"h",p:"Luis Romo",m:"50'"}],note:"México foi o 1º país classificado aos 32-avos."},
+  {g:"D",date:"2026-06-20",dl:"Sábado · 20 jun",venue:"San Francisco Bay Stadium (Levi's)",home:"Turquia",away:"Paraguai",played:true,hs:0,as:1,goals:[{t:"a",p:"Matías Galarza",m:"1'"}],note:"Galarza fez o gol mais rápido da Copa (1min04s); revelado pelo Vasco."},
+  {g:"D",date:"2026-06-19",dl:"Sexta · 19 jun",venue:"Seattle Stadium",home:"Estados Unidos",away:"Austrália",played:true,hs:2,as:0,goals:[{t:"h",p:"Burgess",m:"",og:true},{t:"h",p:"Alex Freeman",m:""}],note:"EUA garantiram vaga no mata-mata; 1º gol contra de Burgess."},
+  {g:"C",date:"2026-06-19",dl:"Sexta · 19 jun",venue:"Boston Stadium (Gillette)",home:"Escócia",away:"Marrocos",played:true,hs:0,as:1,goals:[{t:"a",p:"Ismael Saibari",m:"2'"}],note:"Saibari marcou aos 71 segundos, à época o gol mais rápido da Copa."},
+  {g:"C",date:"2026-06-19",dl:"Sexta · 19 jun",venue:"Philadelphia Stadium",home:"Brasil",away:"Haiti",played:true,hs:3,as:0,goals:[{t:"h",p:"Matheus Cunha",m:"1ºT"},{t:"h",p:"Matheus Cunha",m:"1ºT"},{t:"h",p:"Vinícius Júnior",m:"2ºT"}],note:"1ª vitória do Brasil; Vini Jr. chegou a 3 gols em Copas, à frente de Ronaldinho."},
+  {g:"F",date:"2026-06-20",dl:"Sábado · 20 jun",venue:"Houston Stadium (NRG)",home:"Holanda",away:"Suécia",played:true,hs:5,as:1,goals:[{t:"h",p:"Brian Brobbey",m:"5'"},{t:"h",p:"Brian Brobbey",m:"17'"},{t:"h",p:"Cody Gakpo",m:"47'"},{t:"h",p:"Cody Gakpo",m:"54'"},{t:"h",p:"Summerville",m:"89'"},{t:"a",p:"Elanga",m:"59'"}],note:"⚠️ Autores a confirmar."},
+  {g:"E",date:"2026-06-20",dl:"Sábado · 20 jun",venue:"Toronto Stadium (BMO Field)",home:"Alemanha",away:"Costa do Marfim",played:true,hs:2,as:1,goals:[{t:"a",p:"Kessié",m:"30'"},{t:"h",p:"Undav",m:"68'"},{t:"h",p:"Undav",m:"90'+4"}],note:"Undav saiu do banco, virou o jogo e classificou a Alemanha."},
+  {g:"E",date:"2026-06-20",dl:"Sábado · 20 jun",venue:"Kansas City Stadium",home:"Equador",away:"Curaçao",played:true,hs:0,as:0,goals:[]},
+  {g:"F",date:"2026-06-21",dl:"Domingo · 21 jun",venue:"Estádio Monterrey (BBVA)",home:"Tunísia",away:"Japão",played:true,hs:0,as:4,goals:[{t:"a",p:"Daichi Kamada",m:"4'"},{t:"a",p:"Ayase Ueda",m:"31'"},{t:"a",p:"Junya Ito",m:"68'"},{t:"a",p:"Ayase Ueda",m:"83'"}],note:"Japão goleou no 1000º jogo da história das Copas; Ueda marcou 2."},
+  {g:"H",date:"2026-06-21",dl:"Domingo · 21 jun",venue:"Atlanta Stadium",home:"Espanha",away:"Arábia Saudita",played:true,hs:4,as:0,goals:[{t:"h",p:"Lamine Yamal",m:"10'"},{t:"h",p:"Oyarzabal",m:"21'"},{t:"h",p:"Oyarzabal",m:"24'"},{t:"h",p:"Tambakti",m:"2ºT",og:true}],note:"Lamine Yamal entrou no top 10 de mais jovens a marcar em Copas."},
+  {g:"G",date:"2026-06-21",dl:"Domingo · 21 jun",venue:"Los Angeles Stadium (SoFi)",home:"Bélgica",away:"Irã",played:true,hs:0,as:0,goals:[]},
+  {g:"H",date:"2026-06-21",dl:"Domingo · 21 jun",venue:"Miami Stadium",home:"Uruguai",away:"Cabo Verde",played:true,hs:2,as:2,goals:[{t:"a",p:"Kevin Pina",m:"1ºT"},{t:"h",p:"Maximiliano Araújo",m:"44'"},{t:"h",p:"Agustín Canobbio",m:"45'+6"},{t:"a",p:"Hélio Varela",m:"61'"}],note:"Kevin Pina fez o gol de maior distância da Copa (32m), de falta."},
+  {g:"G",date:"2026-06-21",dl:"Domingo · 21 jun",venue:"BC Place · Vancouver",home:"Nova Zelândia",away:"Egito",played:true,hs:1,as:3,goals:[{t:"h",p:"Surman",m:"1ºT"},{t:"a",p:"Mostafa Mohamed",m:"58'"},{t:"a",p:"Mohamed Salah",m:"66'"},{t:"a",p:"Trezeguet",m:"2ºT"}],note:"1ª vitória do Egito em Copas; Salah é o maior artilheiro egípcio em Mundiais (3)."},
+  {g:"J",date:"2026-06-22",dl:"Segunda · 22 jun",venue:"Dallas Stadium (AT&T)",home:"Argentina",away:"Áustria",played:true,hs:2,as:0,goals:[{t:"h",p:"Lionel Messi",m:"38'"},{t:"h",p:"Lionel Messi",m:"90'+4"}],note:"Messi chegou a 18 gols em Copas (recorde, ultrapassou Klose) e lidera a artilharia da edição com 5."},
+  {g:"I",date:"2026-06-22",dl:"Segunda · 22 jun",venue:"Philadelphia Stadium",home:"França",away:"Iraque",played:true,hs:3,as:0,goals:[{t:"h",p:"Mbappé",m:""},{t:"h",p:"Mbappé",m:""},{t:"h",p:"Dembélé",m:""}],note:"Mbappé marcou 2 (igualou Klose em gols de Copa); Dembélé fez seu 1º gol em Mundiais."},
+  {g:"I",date:"2026-06-22",dl:"Segunda · 22 jun",venue:"New York/New Jersey Stadium (MetLife)",home:"Noruega",away:"Senegal",played:true,hs:3,as:2,goals:[{t:"h",p:"Marcus Pedersen",m:"43'"},{t:"h",p:"Erling Haaland",m:"47'"},{t:"a",p:"Ismaïla Sarr",m:"52'"},{t:"h",p:"Erling Haaland",m:"57'"},{t:"a",p:"Ismaïla Sarr",m:"90'+2"}],note:"Haaland marcou 2 e Sarr fez os 2 do Senegal; Noruega classificada."},
+  {g:"J",date:"2026-06-23",dl:"Terça · 23 jun",venue:"San Francisco Bay Stadium (Levi's)",home:"Jordânia",away:"Argélia",played:true,hs:1,as:2,goals:[{t:"h",p:"Nizar Al-Rashdan",m:""},{t:"a",p:"Benbouali",m:""},{t:"a",p:"Gouiri",m:""}],note:"Argélia virou com 2 gols de bola aérea e eliminou a Jordânia."},
+  {g:"K",date:"2026-06-23",dl:"Terça · 23 jun",venue:"Houston Stadium (NRG)",home:"Portugal",away:"Uzbequistão",played:true,hs:5,as:0,goals:[{t:"h",p:"Cristiano Ronaldo",m:"6'"},{t:"h",p:"Nuno Mendes",m:"16'"},{t:"h",p:"Cristiano Ronaldo",m:"1ºT"},{t:"h",p:"Khusanov",m:"59'",og:true},{t:"h",p:"Rafael Leão",m:"86'"}],note:"Ronaldo se tornou o 1º a marcar em 6 Copas diferentes."},
+  {g:"L",date:"2026-06-23",dl:"Terça · 23 jun",venue:"Boston Stadium (Gillette)",home:"Inglaterra",away:"Gana",played:true,hs:0,as:0,goals:[]},
+  {g:"L",date:"2026-06-23",dl:"Terça · 23 jun",venue:"Toronto Stadium (BMO Field)",home:"Panamá",away:"Croácia",played:true,hs:0,as:1,goals:[{t:"a",p:"Ante Budimir",m:"53'"}],note:"Budimir (assist. Pasalic) eliminou o Panamá, na noite dos 200 jogos de Modrić."},
+  {g:"K",date:"2026-06-23",dl:"Terça · 23 jun",venue:"Estádio Guadalajara",home:"Colômbia",away:"RD Congo",played:true,hs:1,as:0,goals:[{t:"h",p:"Daniel Muñoz",m:""}],note:"Gol de Daniel Muñoz garantiu a Colômbia no mata-mata."},
+  {g:"B",date:"2026-06-24",dl:"Quarta · 24 jun",venue:"BC Place · Vancouver",home:"Suíça",away:"Canadá",played:true,hs:2,as:1,goals:[{t:"h",p:"Rubén Vargas",m:"46'"},{t:"h",p:"Johan Manzambi",m:"57'"},{t:"a",p:"Promise David",m:"76'"}],note:"Suíça termina em 1º no Grupo B; Canadá também avança."},
+  {g:"B",date:"2026-06-24",dl:"Quarta · 24 jun",venue:"Seattle Stadium",home:"Bósnia e Herzegovina",away:"Catar",played:true,hs:3,as:1,goals:[{t:"h",p:"Alajbegović",m:"29'"},{t:"h",p:"Abunada",m:"34'",og:true},{t:"h",p:"Ermin Mahmić",m:"80'"},{t:"a",p:"Hassan Al-Haydos",m:"42'"}],note:"Bósnia segue viva como melhor 3º colocado; Catar eliminado."},
+  {g:"C",date:"2026-06-24",dl:"Quarta · 24 jun",venue:"Miami Stadium",home:"Escócia",away:"Brasil",played:true,hs:0,as:3,goals:[{t:"a",p:"Vinícius Júnior",m:"7'"},{t:"a",p:"Vinícius Júnior",m:"45'+3"},{t:"a",p:"Matheus Cunha",m:"60'"}],note:"Vini Jr. chegou a 4 gols na edição; Neymar estreou; Brasil termina líder do Grupo C (7 pts)."},
+  {g:"C",date:"2026-06-24",dl:"Quarta · 24 jun",venue:"Atlanta Stadium",home:"Marrocos",away:"Haiti",played:true,hs:4,as:2,goals:[{t:"a",p:"Bounou",m:"10'",og:true},{t:"h",p:"Hakimi",m:"39'"},{t:"a",p:"Isidor",m:"43'"},{t:"h",p:"Ismael Saibari",m:"45'+1"},{t:"h",p:"Rahimi",m:"78'"},{t:"h",p:"Yassine",m:"89'"}],note:"Marrocos vence de virada e avança em 2º; Haiti eliminado sem pontos."},
+  {g:"A",date:"2026-06-24",dl:"Quarta · 24 jun",venue:"Estádio Azteca · Cidade do México",home:"Tchéquia",away:"México",played:true,hs:0,as:3,goals:[{t:"a",p:"Mateo Chávez",m:"55'"},{t:"a",p:"Julián Quiñones",m:"61'"},{t:"a",p:"Álvaro Fidalgo",m:"90'+4"}],note:"México lidera o Grupo A com 100%, em noite de recorde de Ochoa; Tchéquia eliminada."},
+  {g:"A",date:"2026-06-24",dl:"Quarta · 24 jun",venue:"Estádio Monterrey (BBVA)",home:"África do Sul",away:"Coreia do Sul",played:true,hs:1,as:0,goals:[{t:"h",p:"Thapelo Maseko",m:"63'"}],note:"Classificação histórica: 1ª vez que a África do Sul passa da fase de grupos."},
   {g:"E",date:"2026-06-25",dl:"Quinta · 25 jun",venue:"New York/New Jersey Stadium (MetLife)",home:"Equador",away:"Alemanha",played:false,time:"17:00"},
   {g:"E",date:"2026-06-25",dl:"Quinta · 25 jun",venue:"Philadelphia Stadium",home:"Curaçao",away:"Costa do Marfim",played:false,time:"17:00"},
   {g:"F",date:"2026-06-25",dl:"Quinta · 25 jun",venue:"Dallas Stadium (AT&T)",home:"Japão",away:"Suécia",played:false,time:"20:00"},
   {g:"F",date:"2026-06-25",dl:"Quinta · 25 jun",venue:"Kansas City Stadium",home:"Tunísia",away:"Holanda",played:false,time:"20:00"},
   {g:"D",date:"2026-06-25",dl:"Quinta · 25 jun",venue:"Los Angeles Stadium (SoFi)",home:"Turquia",away:"Estados Unidos",played:false,time:"23:00"},
   {g:"D",date:"2026-06-25",dl:"Quinta · 25 jun",venue:"San Francisco Bay Stadium (Levi's)",home:"Paraguai",away:"Austrália",played:false,time:"23:00"},
-
   {g:"I",date:"2026-06-26",dl:"Sexta · 26 jun",venue:"Boston Stadium (Gillette)",home:"Noruega",away:"França",played:false,time:"16:00"},
   {g:"I",date:"2026-06-26",dl:"Sexta · 26 jun",venue:"Toronto Stadium (BMO Field)",home:"Senegal",away:"Iraque",played:false,time:"16:00"},
   {g:"H",date:"2026-06-26",dl:"Sexta · 26 jun",venue:"Houston Stadium (NRG)",home:"Cabo Verde",away:"Arábia Saudita",played:false,time:"21:00"},
   {g:"H",date:"2026-06-26",dl:"Sexta · 26 jun",venue:"Estádio Guadalajara",home:"Uruguai",away:"Espanha",played:false,time:"21:00"},
-
   {g:"G",date:"2026-06-27",dl:"Sábado · 27 jun",venue:"Seattle Stadium",home:"Egito",away:"Irã",played:false,time:"00:00"},
   {g:"G",date:"2026-06-27",dl:"Sábado · 27 jun",venue:"BC Place · Vancouver",home:"Nova Zelândia",away:"Bélgica",played:false,time:"00:00"},
   {g:"L",date:"2026-06-27",dl:"Sábado · 27 jun",venue:"New York/New Jersey Stadium (MetLife)",home:"Panamá",away:"Inglaterra",played:false,time:"18:00"},
@@ -640,7 +588,7 @@ function renderScorers(){
       <div class="goals"><div class="bar"><i style="width:${(s.g/max*100)}%"></i></div>
         <div class="gc">${s.g}<small>${s.g===1?'gol':'gols'}</small></div></div></div>`).join('');
   document.getElementById('scorerNote').textContent =
-    "Artilharia calculada automaticamente a partir dos gols cadastrados (gols contra não contam). Líderes confirmados pela Chuteira de Ouro adidas: Balogun, Havertz e Ayari.";
+    "Artilharia completa e atualizada até 24/06 (todos os 161 gols com autor verificado). Gols contra não contam. Líderes: Messi (5); Vini Jr., Mbappé e Haaland (4).";
 }
 
 /* ---------- Seleções (aba por time) ---------- */
