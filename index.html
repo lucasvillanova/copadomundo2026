@@ -90,6 +90,58 @@ nav.tabs{display:flex;gap:6px;margin:26px 0 20px;flex-wrap:wrap}
 .side.teamlink:hover .tname{color:var(--accent);text-decoration:underline;text-underline-offset:3px}
 .side.teamlink:active{transform:scale(.98)}
 .side.teamlink:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+
+/* ---------- Chaveamento ---------- */
+.ko-head{margin-bottom:16px}
+.ko-title{font-family:"Anton";font-weight:400;letter-spacing:.01em;font-size:26px;margin:0 0 10px;color:var(--chalk)}
+.ko-legend{display:flex;gap:16px;flex-wrap:wrap;font-size:12.5px;color:var(--muted);margin-bottom:6px}
+.ko-legend span{display:inline-flex;align-items:center;gap:6px}
+.lg{width:12px;height:12px;border-radius:3px;display:inline-block}
+.lg-win{background:var(--accent)}
+.lg-pen{background:var(--gold)}
+.lg-tbd{background:var(--line)}
+.ko-hint{font-size:12px;color:var(--muted)}
+.bracket{display:flex;align-items:stretch;gap:0;overflow-x:auto;padding:10px 2px 18px;
+  scrollbar-width:thin;-webkit-overflow-scrolling:touch}
+.bracket .half{display:flex;gap:14px}
+.bracket .center{display:flex;flex-direction:column;justify-content:center;align-items:center;gap:20px;min-width:150px;padding:0 8px}
+.bracket .round{display:flex;flex-direction:column;justify-content:flex-start;min-width:158px}
+.bracket .round-body{flex:1 1 auto;display:flex;flex-direction:column;justify-content:space-around;gap:10px}
+.round-label{font-family:"Archivo";font-weight:800;font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--muted);text-align:center;margin-bottom:2px}
+.ko-match{background:var(--card,rgba(255,255,255,.02));border:1px solid var(--line);border-radius:9px;overflow:hidden;
+  display:flex;flex-direction:column}
+.ko-match .kot{display:flex;align-items:center;gap:7px;padding:7px 9px;font-size:13px;line-height:1.15}
+.ko-match .kot+.kot{border-top:1px solid var(--line)}
+.ko-match .kot img{width:20px;height:14px;border-radius:2px;object-fit:cover;flex:0 0 auto;box-shadow:0 0 0 1px rgba(0,0,0,.25)}
+.ko-match .kot .nm{flex:1 1 auto;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:var(--chalk);font-weight:600}
+.ko-match .kot .sc{flex:0 0 auto;font-family:"Archivo";font-weight:800;font-size:13px;color:var(--muted);min-width:16px;text-align:right}
+.ko-match .kot.win .nm{color:#fff}
+.ko-match .kot.win{background:linear-gradient(90deg,rgba(43,89,224,.16),transparent)}
+.ko-match .kot.win .sc{color:var(--accent)}
+.ko-match .kot.win .nm::after{content:"✓";margin-left:6px;color:var(--accent);font-weight:900;font-size:11px}
+.ko-match .kot.lose .nm,.ko-match .kot.lose .sc{color:var(--muted);opacity:.72}
+.ko-match .kot.clickable{cursor:pointer}
+.ko-match .kot.clickable:hover{background:rgba(43,89,224,.10)}
+.ko-match .kot.clickable:hover .nm{text-decoration:underline;text-underline-offset:2px}
+.ko-match .kot.tbd{color:var(--muted)}
+.ko-match .kot.tbd .nm{color:var(--muted);font-weight:600;font-style:italic;opacity:.85}
+.ko-match.pen{border-color:rgba(217,154,0,.5)}
+.ko-match .kmeta{font-size:10.5px;color:var(--muted);text-align:center;padding:3px 6px;border-top:1px dashed var(--line);letter-spacing:.03em}
+.ko-match.upcoming .kmeta{color:var(--accent)}
+/* lado direito espelhado: bandeira à direita, texto alinhado à direita */
+.half.right .ko-match .kot{flex-direction:row-reverse;text-align:right}
+.half.right .ko-match .kot .sc{text-align:left}
+.half.right .ko-match .kot.win .nm::after{margin-left:0;margin-right:6px}
+.center .ko-final{background:var(--grad);color:var(--pitch-deep);border-radius:11px;padding:12px 14px;text-align:center;min-width:130px}
+.center .ko-final .lbl{font-family:"Anton";font-size:16px;letter-spacing:.02em}
+.center .ko-final .sub{font-size:11px;font-weight:700;opacity:.85;margin-top:2px}
+.center .ko-third{border:1px dashed var(--line);border-radius:10px;padding:8px 12px;text-align:center;color:var(--muted);font-size:12px;font-weight:700;letter-spacing:.03em}
+.center .ko-trophy{font-size:26px;line-height:1}
+@media(max-width:760px){
+  .bracket .round{min-width:150px}
+  .ko-match .kot{font-size:12.5px;padding:6px 8px}
+}
 @keyframes fade{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
 
 /* ---------- Filtros ---------- */
@@ -279,7 +331,7 @@ tbody tr.third{box-shadow:inset 3px 0 0 var(--muted-2)}
     <h1>Copa do Mundo <span class="yr">2026</span></h1>
     <p class="subhead">Painel da fase de grupos — resultados, classificação por grupo e artilheiros. Tabela e artilharia calculadas automaticamente a partir dos jogos disputados.</p>
     <div class="hosts" id="hosts"></div>
-    <div class="updated"><span class="dot"></span> Atualizado em <b style="color:var(--chalk);margin-left:2px">25/06/2026</b> · resultados completos até 24/06</div>
+    <div class="updated"><span class="dot"></span> Atualizado em <b style="color:var(--chalk);margin-left:2px">01/07/2026</b> · fase de grupos encerrada; 32-avos de final em andamento</div>
     <div class="kpis" id="kpis"></div>
   </div>
 </header>
@@ -290,6 +342,7 @@ tbody tr.third{box-shadow:inset 3px 0 0 var(--muted-2)}
     <button class="tab" data-view="grupos">Grupos</button>
     <button class="tab" data-view="artilheiros">Artilheiros</button>
     <button class="tab" data-view="selecoes">Seleções</button>
+    <button class="tab" data-view="chaveamento">Chaveamento</button>
   </nav>
 
   <section class="view active" id="view-jogos">
@@ -326,8 +379,21 @@ tbody tr.third{box-shadow:inset 3px 0 0 var(--muted-2)}
     <div id="teamMatches"></div>
   </section>
 
+  <section class="view" id="view-chaveamento">
+    <div class="ko-head">
+      <h2 class="ko-title">Chaveamento — mata-mata</h2>
+      <div class="ko-legend">
+        <span><i class="lg lg-win"></i>Classificado</span>
+        <span><i class="lg lg-pen"></i>Decidido nos pênaltis</span>
+        <span><i class="lg lg-tbd"></i>A definir</span>
+      </div>
+      <div class="ko-hint">Role na horizontal para ver as duas chaves. Toque em uma seleção para abrir a aba Seleções.</div>
+    </div>
+    <div id="bracket" class="bracket"></div>
+  </section>
+
   <div class="foot">
-    <b>Fontes:</b> relatórios oficiais da FIFA, Wikipédia (2026 FIFA World Cup) e veículos esportivos — placares conferidos (161 gols em 54 jogos até 24/06). Bandeiras: flagcdn.com.<br>
+    <b>Fontes:</b> relatórios oficiais da FIFA, Wikipédia (2026 FIFA World Cup) e veículos esportivos — fase de grupos completa e conferida (72 jogos, 215 gols, todos com autor); mata-mata a partir dos 32-avos com datas e horários oficiais de Brasília. Bandeiras: flagcdn.com.<br>
     <b>Como atualizar:</b> a cada dia, basta acrescentar os jogos no bloco <code>MATCHES</code> do código (placar + gols). Classificação, saldo, pontos, total de gols e artilharia se recalculam sozinhos.<br>
     <b>Programação:</b> fase de grupos completa (1ª a 3ª rodada), com data, horário de Brasília e estádio conforme a tabela oficial da FIFA. Madrugadas brasileiras aparecem como 00h/01h.
   </div>
@@ -395,13 +461,13 @@ const MATCHES = [
   {g:"H",date:"2026-06-15",dl:"Segunda · 15 jun",venue:"Atlanta Stadium",home:"Espanha",away:"Cabo Verde",played:true,hs:0,as:0,goals:[]},
   {g:"G",date:"2026-06-15",dl:"Segunda · 15 jun",venue:"Seattle Stadium",home:"Bélgica",away:"Egito",played:true,hs:1,as:1,goals:[{t:"a",p:"Emam Ashour",m:"19'"},{t:"h",p:"Mohamed Hany",m:"2ºT",og:true}],note:"Gol da Bélgica foi gol contra de Mohamed Hany (Egito), no início do 2º tempo."},
   {g:"H",date:"2026-06-15",dl:"Segunda · 15 jun",venue:"Miami Stadium",home:"Arábia Saudita",away:"Uruguai",played:true,hs:1,as:1,goals:[{t:"h",p:"Al-Amri",m:"41'"},{t:"a",p:"Maximiliano Araújo",m:"79'"}]},
-  {g:"G",date:"2026-06-15",dl:"Segunda · 15 jun",venue:"Los Angeles Stadium (SoFi)",home:"Irã",away:"Nova Zelândia",played:true,hs:2,as:2,goals:[{t:"a",p:"Elijah Just",m:"6'"},{t:"h",p:"Rezaeian",m:"31'"},{t:"a",p:"Elijah Just",m:"54'"},{t:"h",p:"Mohebi",m:"63'"}]},
+  {g:"G",date:"2026-06-15",dl:"Segunda · 15 jun",venue:"Los Angeles Stadium (SoFi)",home:"Irã",away:"Nova Zelândia",played:true,hs:2,as:2,goals:[{t:"a",p:"Elijah Just",m:"6'"},{t:"h",p:"Ramin Rezaeian",m:"31'"},{t:"a",p:"Elijah Just",m:"54'"},{t:"h",p:"Mohebi",m:"63'"}]},
   {g:"J",date:"2026-06-16",dl:"Terça · 16 jun",venue:"Kansas City Stadium",home:"Argentina",away:"Argélia",played:true,hs:3,as:0,goals:[{t:"h",p:"Lionel Messi",m:"17'"},{t:"h",p:"Lionel Messi",m:"59'"},{t:"h",p:"Lionel Messi",m:"75'"}],note:"Hat-trick de Messi, que chegou a 16 gols em Copas e igualou Klose como maior artilheiro da história dos Mundiais."},
   {g:"I",date:"2026-06-16",dl:"Terça · 16 jun",venue:"New York/New Jersey Stadium (MetLife)",home:"França",away:"Senegal",played:true,hs:3,as:1,goals:[{t:"h",p:"Mbappé",m:"66'"},{t:"h",p:"Barcola",m:"82'"},{t:"a",p:"Ibrahim Mbaye",m:"90'+5"},{t:"h",p:"Mbappé",m:"90'+6"}]},
   {g:"I",date:"2026-06-16",dl:"Terça · 16 jun",venue:"Boston Stadium (Gillette)",home:"Iraque",away:"Noruega",played:true,hs:1,as:4,goals:[{t:"a",p:"Erling Haaland",m:"29'"},{t:"h",p:"Aymen Hussein",m:"39'"},{t:"a",p:"Erling Haaland",m:"43'"},{t:"a",p:"Ostigård",m:"76'"},{t:"a",p:"Aymen Hussein",m:"90'+6",og:true}],note:"4º gol da Noruega: gol contra de Aymen Hussein (90'+6')."},
-  {g:"J",date:"2026-06-17",dl:"Quarta · 17 jun",venue:"San Francisco Bay Stadium (Levi's)",home:"Áustria",away:"Jordânia",played:true,hs:3,as:1,goals:[{t:"h",p:"Romano Schmid",m:"21'"},{t:"a",p:"Ali Olwan",m:"50'"},{t:"h",p:"Yazan Abu Arab",m:"81'",og:true},{t:"h",p:"Arnautović",m:"90'+7"}],note:"Olwan marcou o 1º gol da Jordânia em Copas do Mundo. 2º da Áustria foi gol contra de Yazan Abu Arab."},
+  {g:"J",date:"2026-06-17",dl:"Quarta · 17 jun",venue:"San Francisco Bay Stadium (Levi's)",home:"Áustria",away:"Jordânia",played:true,hs:3,as:1,goals:[{t:"h",p:"Romano Schmid",m:"21'"},{t:"a",p:"Ali Olwan",m:"50'"},{t:"h",p:"Yazan Abu Arab",m:"81'",og:true},{t:"h",p:"Marko Arnautović",m:"90'+7"}],note:"Olwan marcou o 1º gol da Jordânia em Copas do Mundo. 2º da Áustria foi gol contra de Yazan Abu Arab."},
   {g:"K",date:"2026-06-17",dl:"Quarta · 17 jun",venue:"Houston Stadium (NRG)",home:"Portugal",away:"RD Congo",played:true,hs:1,as:1,goals:[{t:"h",p:"João Neves",m:"6'"},{t:"a",p:"Yoane Wissa",m:"90'+5"}],note:"Wissa marcou o 1º gol da RD Congo na história das Copas."},
-  {g:"L",date:"2026-06-17",dl:"Quarta · 17 jun",venue:"Dallas Stadium (AT&T)",home:"Inglaterra",away:"Croácia",played:true,hs:4,as:2,goals:[{t:"h",p:"Harry Kane",m:"12'"},{t:"a",p:"Baturina",m:"35'"},{t:"h",p:"Harry Kane",m:"42'"},{t:"h",p:"Bellingham",m:"46'"},{t:"a",p:"Petar Musa",m:"50'"},{t:"h",p:"Rashford",m:"85'"}]},
+  {g:"L",date:"2026-06-17",dl:"Quarta · 17 jun",venue:"Dallas Stadium (AT&T)",home:"Inglaterra",away:"Croácia",played:true,hs:4,as:2,goals:[{t:"h",p:"Harry Kane",m:"12'"},{t:"a",p:"Baturina",m:"35'"},{t:"h",p:"Harry Kane",m:"42'"},{t:"h",p:"Jude Bellingham",m:"46'"},{t:"a",p:"Petar Musa",m:"50'"},{t:"h",p:"Rashford",m:"85'"}]},
   {g:"L",date:"2026-06-17",dl:"Quarta · 17 jun",venue:"Toronto Stadium (BMO Field)",home:"Gana",away:"Panamá",played:true,hs:1,as:0,goals:[{t:"h",p:"Caleb Yirenkyi",m:"90'+5"}]},
   {g:"K",date:"2026-06-17",dl:"Quarta · 17 jun",venue:"Estádio Azteca · Cidade do México",home:"Uzbequistão",away:"Colômbia",played:true,hs:1,as:3,goals:[{t:"a",p:"Daniel Muñoz",m:"40'"},{t:"h",p:"Fayzullaev",m:"60'"},{t:"a",p:"Luis Díaz",m:"65'"},{t:"a",p:"Campaz",m:"90'+8"}]},
   {g:"A",date:"2026-06-18",dl:"Quinta · 18 jun",venue:"Atlanta Stadium",home:"Tchéquia",away:"África do Sul",played:true,hs:1,as:1,goals:[{t:"h",p:"Sadílek",m:"6'"},{t:"a",p:"Mokoena",m:"83' (pen)"}]},
@@ -412,7 +478,7 @@ const MATCHES = [
   {g:"D",date:"2026-06-19",dl:"Sexta · 19 jun",venue:"Seattle Stadium",home:"Estados Unidos",away:"Austrália",played:true,hs:2,as:0,goals:[{t:"h",p:"Burgess",m:"",og:true},{t:"h",p:"Alex Freeman",m:""}],note:"EUA garantiram vaga no mata-mata; 1º gol contra de Burgess."},
   {g:"C",date:"2026-06-19",dl:"Sexta · 19 jun",venue:"Boston Stadium (Gillette)",home:"Escócia",away:"Marrocos",played:true,hs:0,as:1,goals:[{t:"a",p:"Ismael Saibari",m:"2'"}],note:"Saibari marcou aos 71 segundos, à época o gol mais rápido da Copa."},
   {g:"C",date:"2026-06-19",dl:"Sexta · 19 jun",venue:"Philadelphia Stadium",home:"Brasil",away:"Haiti",played:true,hs:3,as:0,goals:[{t:"h",p:"Matheus Cunha",m:"1ºT"},{t:"h",p:"Matheus Cunha",m:"1ºT"},{t:"h",p:"Vinícius Júnior",m:"2ºT"}],note:"1ª vitória do Brasil; Vini Jr. chegou a 3 gols em Copas, à frente de Ronaldinho."},
-  {g:"F",date:"2026-06-20",dl:"Sábado · 20 jun",venue:"Houston Stadium (NRG)",home:"Holanda",away:"Suécia",played:true,hs:5,as:1,goals:[{t:"h",p:"Brian Brobbey",m:"5'"},{t:"h",p:"Brian Brobbey",m:"17'"},{t:"h",p:"Cody Gakpo",m:"47'"},{t:"h",p:"Cody Gakpo",m:"54'"},{t:"h",p:"Summerville",m:"89'"},{t:"a",p:"Elanga",m:"59'"}],note:"⚠️ Autores a confirmar."},
+  {g:"F",date:"2026-06-20",dl:"Sábado · 20 jun",venue:"Houston Stadium (NRG)",home:"Holanda",away:"Suécia",played:true,hs:5,as:1,goals:[{t:"h",p:"Brian Brobbey",m:"5'"},{t:"h",p:"Brian Brobbey",m:"17'"},{t:"h",p:"Cody Gakpo",m:"47'"},{t:"h",p:"Cody Gakpo",m:"54'"},{t:"h",p:"Summerville",m:"89'"},{t:"a",p:"Anthony Elanga",m:"59'"}],note:"⚠️ Autores a confirmar."},
   {g:"E",date:"2026-06-20",dl:"Sábado · 20 jun",venue:"Toronto Stadium (BMO Field)",home:"Alemanha",away:"Costa do Marfim",played:true,hs:2,as:1,goals:[{t:"a",p:"Kessié",m:"30'"},{t:"h",p:"Undav",m:"68'"},{t:"h",p:"Undav",m:"90'+4"}],note:"Undav saiu do banco, virou o jogo e classificou a Alemanha."},
   {g:"E",date:"2026-06-20",dl:"Sábado · 20 jun",venue:"Kansas City Stadium",home:"Equador",away:"Curaçao",played:true,hs:0,as:0,goals:[]},
   {g:"F",date:"2026-06-21",dl:"Domingo · 21 jun",venue:"Estádio Monterrey (BBVA)",home:"Tunísia",away:"Japão",played:true,hs:0,as:4,goals:[{t:"a",p:"Daichi Kamada",m:"4'"},{t:"a",p:"Ayase Ueda",m:"31'"},{t:"a",p:"Junya Ito",m:"68'"},{t:"a",p:"Ayase Ueda",m:"83'"}],note:"Japão goleou no 1000º jogo da história das Copas; Ueda marcou 2."},
@@ -421,7 +487,7 @@ const MATCHES = [
   {g:"H",date:"2026-06-21",dl:"Domingo · 21 jun",venue:"Miami Stadium",home:"Uruguai",away:"Cabo Verde",played:true,hs:2,as:2,goals:[{t:"a",p:"Kevin Pina",m:"1ºT"},{t:"h",p:"Maximiliano Araújo",m:"44'"},{t:"h",p:"Agustín Canobbio",m:"45'+6"},{t:"a",p:"Hélio Varela",m:"61'"}],note:"Kevin Pina fez o gol de maior distância da Copa (32m), de falta."},
   {g:"G",date:"2026-06-21",dl:"Domingo · 21 jun",venue:"BC Place · Vancouver",home:"Nova Zelândia",away:"Egito",played:true,hs:1,as:3,goals:[{t:"h",p:"Surman",m:"1ºT"},{t:"a",p:"Mostafa Mohamed",m:"58'"},{t:"a",p:"Mohamed Salah",m:"66'"},{t:"a",p:"Trezeguet",m:"2ºT"}],note:"1ª vitória do Egito em Copas; Salah é o maior artilheiro egípcio em Mundiais (3)."},
   {g:"J",date:"2026-06-22",dl:"Segunda · 22 jun",venue:"Dallas Stadium (AT&T)",home:"Argentina",away:"Áustria",played:true,hs:2,as:0,goals:[{t:"h",p:"Lionel Messi",m:"38'"},{t:"h",p:"Lionel Messi",m:"90'+4"}],note:"Messi chegou a 18 gols em Copas (recorde, ultrapassou Klose) e lidera a artilharia da edição com 5."},
-  {g:"I",date:"2026-06-22",dl:"Segunda · 22 jun",venue:"Philadelphia Stadium",home:"França",away:"Iraque",played:true,hs:3,as:0,goals:[{t:"h",p:"Mbappé",m:""},{t:"h",p:"Mbappé",m:""},{t:"h",p:"Dembélé",m:""}],note:"Mbappé marcou 2 (igualou Klose em gols de Copa); Dembélé fez seu 1º gol em Mundiais."},
+  {g:"I",date:"2026-06-22",dl:"Segunda · 22 jun",venue:"Philadelphia Stadium",home:"França",away:"Iraque",played:true,hs:3,as:0,goals:[{t:"h",p:"Mbappé",m:""},{t:"h",p:"Mbappé",m:""},{t:"h",p:"Ousmane Dembélé",m:""}],note:"Mbappé marcou 2 (igualou Klose em gols de Copa); Dembélé fez seu 1º gol em Mundiais."},
   {g:"I",date:"2026-06-22",dl:"Segunda · 22 jun",venue:"New York/New Jersey Stadium (MetLife)",home:"Noruega",away:"Senegal",played:true,hs:3,as:2,goals:[{t:"h",p:"Marcus Pedersen",m:"43'"},{t:"h",p:"Erling Haaland",m:"47'"},{t:"a",p:"Ismaïla Sarr",m:"52'"},{t:"h",p:"Erling Haaland",m:"57'"},{t:"a",p:"Ismaïla Sarr",m:"90'+2"}],note:"Haaland marcou 2 e Sarr fez os 2 do Senegal; Noruega classificada."},
   {g:"J",date:"2026-06-23",dl:"Terça · 23 jun",venue:"San Francisco Bay Stadium (Levi's)",home:"Jordânia",away:"Argélia",played:true,hs:1,as:2,goals:[{t:"h",p:"Nizar Al-Rashdan",m:""},{t:"a",p:"Benbouali",m:""},{t:"a",p:"Gouiri",m:""}],note:"Argélia virou com 2 gols de bola aérea e eliminou a Jordânia."},
   {g:"K",date:"2026-06-23",dl:"Terça · 23 jun",venue:"Houston Stadium (NRG)",home:"Portugal",away:"Uzbequistão",played:true,hs:5,as:0,goals:[{t:"h",p:"Cristiano Ronaldo",m:"6'"},{t:"h",p:"Nuno Mendes",m:"16'"},{t:"h",p:"Cristiano Ronaldo",m:"1ºT"},{t:"h",p:"Khusanov",m:"59'",og:true},{t:"h",p:"Rafael Leão",m:"86'"}],note:"Ronaldo se tornou o 1º a marcar em 6 Copas diferentes."},
@@ -434,24 +500,24 @@ const MATCHES = [
   {g:"C",date:"2026-06-24",dl:"Quarta · 24 jun",venue:"Atlanta Stadium",home:"Marrocos",away:"Haiti",played:true,hs:4,as:2,goals:[{t:"a",p:"Bounou",m:"10'",og:true},{t:"h",p:"Hakimi",m:"39'"},{t:"a",p:"Isidor",m:"43'"},{t:"h",p:"Ismael Saibari",m:"45'+1"},{t:"h",p:"Rahimi",m:"78'"},{t:"h",p:"Yassine",m:"89'"}],note:"Marrocos vence de virada e avança em 2º; Haiti eliminado sem pontos."},
   {g:"A",date:"2026-06-24",dl:"Quarta · 24 jun",venue:"Estádio Azteca · Cidade do México",home:"Tchéquia",away:"México",played:true,hs:0,as:3,goals:[{t:"a",p:"Mateo Chávez",m:"55'"},{t:"a",p:"Julián Quiñones",m:"61'"},{t:"a",p:"Álvaro Fidalgo",m:"90'+4"}],note:"México lidera o Grupo A com 100%, em noite de recorde de Ochoa; Tchéquia eliminada."},
   {g:"A",date:"2026-06-24",dl:"Quarta · 24 jun",venue:"Estádio Monterrey (BBVA)",home:"África do Sul",away:"Coreia do Sul",played:true,hs:1,as:0,goals:[{t:"h",p:"Thapelo Maseko",m:"63'"}],note:"Classificação histórica: 1ª vez que a África do Sul passa da fase de grupos."},
-  {g:"E",date:"2026-06-25",dl:"Quinta · 25 jun",venue:"New York/New Jersey Stadium (MetLife)",home:"Equador",away:"Alemanha",played:false,time:"17:00"},
-  {g:"E",date:"2026-06-25",dl:"Quinta · 25 jun",venue:"Philadelphia Stadium",home:"Curaçao",away:"Costa do Marfim",played:false,time:"17:00"},
-  {g:"F",date:"2026-06-25",dl:"Quinta · 25 jun",venue:"Dallas Stadium (AT&T)",home:"Japão",away:"Suécia",played:false,time:"20:00"},
-  {g:"F",date:"2026-06-25",dl:"Quinta · 25 jun",venue:"Kansas City Stadium",home:"Tunísia",away:"Holanda",played:false,time:"20:00"},
-  {g:"D",date:"2026-06-25",dl:"Quinta · 25 jun",venue:"Los Angeles Stadium (SoFi)",home:"Turquia",away:"Estados Unidos",played:false,time:"23:00"},
-  {g:"D",date:"2026-06-25",dl:"Quinta · 25 jun",venue:"San Francisco Bay Stadium (Levi's)",home:"Paraguai",away:"Austrália",played:false,time:"23:00"},
-  {g:"I",date:"2026-06-26",dl:"Sexta · 26 jun",venue:"Boston Stadium (Gillette)",home:"Noruega",away:"França",played:false,time:"16:00"},
-  {g:"I",date:"2026-06-26",dl:"Sexta · 26 jun",venue:"Toronto Stadium (BMO Field)",home:"Senegal",away:"Iraque",played:false,time:"16:00"},
-  {g:"H",date:"2026-06-26",dl:"Sexta · 26 jun",venue:"Houston Stadium (NRG)",home:"Cabo Verde",away:"Arábia Saudita",played:false,time:"21:00"},
-  {g:"H",date:"2026-06-26",dl:"Sexta · 26 jun",venue:"Estádio Guadalajara",home:"Uruguai",away:"Espanha",played:false,time:"21:00"},
-  {g:"G",date:"2026-06-27",dl:"Sábado · 27 jun",venue:"Seattle Stadium",home:"Egito",away:"Irã",played:false,time:"00:00"},
-  {g:"G",date:"2026-06-27",dl:"Sábado · 27 jun",venue:"BC Place · Vancouver",home:"Nova Zelândia",away:"Bélgica",played:false,time:"00:00"},
-  {g:"L",date:"2026-06-27",dl:"Sábado · 27 jun",venue:"New York/New Jersey Stadium (MetLife)",home:"Panamá",away:"Inglaterra",played:false,time:"18:00"},
-  {g:"L",date:"2026-06-27",dl:"Sábado · 27 jun",venue:"Philadelphia Stadium",home:"Croácia",away:"Gana",played:false,time:"18:00"},
-  {g:"K",date:"2026-06-27",dl:"Sábado · 27 jun",venue:"Miami Stadium",home:"Colômbia",away:"Portugal",played:false,time:"20:30"},
-  {g:"K",date:"2026-06-27",dl:"Sábado · 27 jun",venue:"Atlanta Stadium",home:"RD Congo",away:"Uzbequistão",played:false,time:"20:30"},
-  {g:"J",date:"2026-06-27",dl:"Sábado · 27 jun",venue:"Kansas City Stadium",home:"Argélia",away:"Áustria",played:false,time:"23:00"},
-  {g:"J",date:"2026-06-27",dl:"Sábado · 27 jun",venue:"Dallas Stadium (AT&T)",home:"Jordânia",away:"Argentina",played:false,time:"23:00"}
+  {g:"E",date:"2026-06-25",dl:"Quinta · 25 jun",venue:"New York/New Jersey Stadium (MetLife)",home:"Equador",away:"Alemanha",played:true,hs:2,as:1,goals:[{t:"a",p:"Leroy Sané",m:"1'"},{t:"h",p:"John Angulo",m:"8'"},{t:"h",p:"Gonzalo Plata",m:"2ºT"}]},
+  {g:"E",date:"2026-06-25",dl:"Quinta · 25 jun",venue:"Philadelphia Stadium",home:"Curaçao",away:"Costa do Marfim",played:true,hs:0,as:2,goals:[{t:"a",p:"Nicolas Pépé",m:"7'"},{t:"a",p:"Nicolas Pépé",m:"64'"}]},
+  {g:"F",date:"2026-06-25",dl:"Quinta · 25 jun",venue:"Dallas Stadium (AT&T)",home:"Japão",away:"Suécia",played:true,hs:1,as:1,goals:[{t:"h",p:"Daizen Maeda",m:"2ºT"},{t:"a",p:"Anthony Elanga",m:"2ºT"}]},
+  {g:"F",date:"2026-06-25",dl:"Quinta · 25 jun",venue:"Kansas City Stadium",home:"Tunísia",away:"Holanda",played:true,hs:1,as:3,goals:[{t:"a",p:"Ellyes Skhiri",m:"2'",og:true},{t:"a",p:"Brian Brobbey",m:"6'"},{t:"h",p:"Hazem Mastouri",m:"53'"},{t:"a",p:"Jan Paul van Hecke",m:"61'"}]},
+  {g:"D",date:"2026-06-25",dl:"Quinta · 25 jun",venue:"Los Angeles Stadium (SoFi)",home:"Turquia",away:"Estados Unidos",played:true,hs:3,as:2,goals:[{t:"a",p:"Auston Trusty",m:"3'"},{t:"h",p:"Arda Güler",m:"10'"},{t:"h",p:"Orkun Kökçü",m:"31'"},{t:"a",p:"Sebastian Berhalter",m:"49'"},{t:"h",p:"Kaan Ayhan",m:"90'+8"}]},
+  {g:"D",date:"2026-06-25",dl:"Quinta · 25 jun",venue:"San Francisco Bay Stadium (Levi's)",home:"Paraguai",away:"Austrália",played:true,hs:0,as:0,goals:[]},
+  {g:"I",date:"2026-06-26",dl:"Sexta · 26 jun",venue:"Boston Stadium (Gillette)",home:"Noruega",away:"França",played:true,hs:1,as:4,goals:[{t:"a",p:"Ousmane Dembélé",m:"7'"},{t:"a",p:"Ousmane Dembélé",m:"19'"},{t:"h",p:"Thelo Aasgaard",m:"20'"},{t:"a",p:"Ousmane Dembélé",m:"31'"},{t:"a",p:"Désiré Doué",m:"90'+3"}]},
+  {g:"I",date:"2026-06-26",dl:"Sexta · 26 jun",venue:"Toronto Stadium (BMO Field)",home:"Senegal",away:"Iraque",played:true,hs:5,as:0,goals:[{t:"h",p:"Abdoulaye Seck",m:"3'"},{t:"h",p:"Ismaïla Sarr",m:"55'"},{t:"h",p:"Pape Gueye",m:"58'"},{t:"h",p:"Pape Gueye",m:"70'"},{t:"h",p:"Iliman Ndiaye",m:"81'"}]},
+  {g:"H",date:"2026-06-26",dl:"Sexta · 26 jun",venue:"Houston Stadium (NRG)",home:"Cabo Verde",away:"Arábia Saudita",played:true,hs:0,as:0,goals:[]},
+  {g:"H",date:"2026-06-26",dl:"Sexta · 26 jun",venue:"Estádio Guadalajara",home:"Uruguai",away:"Espanha",played:true,hs:0,as:1,goals:[{t:"a",p:"Álex Baena",m:"42'"}]},
+  {g:"G",date:"2026-06-27",dl:"Sábado · 27 jun",venue:"Seattle Stadium",home:"Egito",away:"Irã",played:true,hs:1,as:1,goals:[{t:"h",p:"Mohamed Saber",m:"5'"},{t:"a",p:"Ramin Rezaeian",m:"14'"}]},
+  {g:"G",date:"2026-06-27",dl:"Sábado · 27 jun",venue:"BC Place · Vancouver",home:"Nova Zelândia",away:"Bélgica",played:true,hs:1,as:5,goals:[{t:"a",p:"Leandro Trossard",m:"27'"},{t:"a",p:"Leandro Trossard",m:"49'"},{t:"a",p:"Kevin De Bruyne",m:"66'"},{t:"h",p:"Elijah Just",m:"83'"},{t:"a",p:"Romelu Lukaku",m:"85'"},{t:"a",p:"Alexis Saelemaekers",m:"90'+3"}]},
+  {g:"L",date:"2026-06-27",dl:"Sábado · 27 jun",venue:"New York/New Jersey Stadium (MetLife)",home:"Panamá",away:"Inglaterra",played:true,hs:0,as:2,goals:[{t:"a",p:"Jude Bellingham",m:"61'"},{t:"a",p:"Harry Kane",m:"66'"}]},
+  {g:"L",date:"2026-06-27",dl:"Sábado · 27 jun",venue:"Philadelphia Stadium",home:"Croácia",away:"Gana",played:true,hs:2,as:1,goals:[{t:"h",p:"Petar Sučić",m:"30'"},{t:"a",p:"Derrick Luckassen",m:"72'"},{t:"h",p:"Nikola Vlašić",m:"82'"}]},
+  {g:"K",date:"2026-06-27",dl:"Sábado · 27 jun",venue:"Miami Stadium",home:"Colômbia",away:"Portugal",played:true,hs:0,as:0,goals:[]},
+  {g:"K",date:"2026-06-27",dl:"Sábado · 27 jun",venue:"Atlanta Stadium",home:"RD Congo",away:"Uzbequistão",played:true,hs:3,as:1,goals:[{t:"a",p:"Eldor Shomurodov",m:"10'"},{t:"h",p:"Yoane Wissa",m:"68'"},{t:"h",p:"Fiston Mayele",m:"78'"},{t:"h",p:"Yoane Wissa",m:"90'+1"}]},
+  {g:"J",date:"2026-06-27",dl:"Sábado · 27 jun",venue:"Kansas City Stadium",home:"Argélia",away:"Áustria",played:true,hs:3,as:3,goals:[{t:"a",p:"Marko Arnautović",m:"28'"},{t:"h",p:"Rafik Belghali",m:"45'"},{t:"a",p:"Marcel Sabitzer",m:"55'"},{t:"h",p:"Riyad Mahrez",m:"60'"},{t:"h",p:"Riyad Mahrez",m:"90'+3"},{t:"a",p:"Saša Kalajdžić",m:"90'+6"}]},
+  {g:"J",date:"2026-06-27",dl:"Sábado · 27 jun",venue:"Dallas Stadium (AT&T)",home:"Jordânia",away:"Argentina",played:true,hs:1,as:3,goals:[{t:"a",p:"Giovani Lo Celso",m:"1ºT"},{t:"a",p:"Lautaro Martínez",m:"31' (pên)"},{t:"h",p:"Mousa Al-Taamari",m:"55'"},{t:"a",p:"Lionel Messi",m:"80'"}]}
 ];
 
 /* ============================================================================
@@ -593,7 +659,7 @@ function renderScorers(){
       <div class="goals"><div class="bar"><i style="width:${(s.g/max*100)}%"></i></div>
         <div class="gc">${s.g}<small>${s.g===1?'gol':'gols'}</small></div></div></div>`).join('');
   document.getElementById('scorerNote').textContent =
-    "Artilharia completa e atualizada até 24/06 (todos os 161 gols com autor verificado). Gols contra não contam. Líderes: Messi (5); Vini Jr., Mbappé e Haaland (4).";
+    "Artilharia completa e verificada em toda a fase de grupos (72 jogos). Gols contra não contam. Líder: Messi (6); na sequência, Mbappé, Haaland, Vini Jr. e Dembélé (4).";
 }
 
 /* ---------- Seleções (aba por time) ---------- */
@@ -654,6 +720,101 @@ function goToTeam(team){
   window.scrollTo({top:0, behavior:'smooth'});
 }
 
+/* ---------- Chaveamento (mata-mata) ---------- */
+/* Fonte: chaveamento oficial (imagem da transmissão) + relatórios/veículos.
+   Ordem dos 16 confrontos de 32-avos segue a chave (cima→baixo), lado L e R. */
+const ABBR={"Alemanha":"ALE","Paraguai":"PAR","França":"FRA","Suécia":"SUE","África do Sul":"AFS","Canadá":"CAN","Holanda":"HOL","Marrocos":"MAR","Portugal":"POR","Croácia":"CRO","Espanha":"ESP","Áustria":"AUT","Estados Unidos":"EUA","Bósnia e Herzegovina":"BOS","Bélgica":"BEL","Senegal":"SEN","Brasil":"BRA","Japão":"JAP","Costa do Marfim":"CMA","Noruega":"NOR","México":"MEX","Equador":"EQU","Inglaterra":"ING","RD Congo":"RDC","Argentina":"ARG","Cabo Verde":"CBV","Austrália":"AUS","Egito":"EGI","Suíça":"SUI","Argélia":"AGL","Colômbia":"COL","Gana":"GAN"};
+
+/* 16 confrontos de 32-avos (ordem da chave, cima→baixo). d=data, t=horário Brasília.
+   Fonte do calendário: tabela oficial (FIFA / pitacosdacopa). */
+const R32=[
+ {s:'L',h:'Alemanha',a:'Paraguai',hs:1,as:1,ph:3,pa:4,played:true,d:'29/06'},
+ {s:'L',h:'França',a:'Suécia',hs:3,as:0,played:true,d:'30/06'},
+ {s:'L',h:'África do Sul',a:'Canadá',hs:0,as:1,played:true,d:'28/06'},
+ {s:'L',h:'Holanda',a:'Marrocos',hs:1,as:1,ph:2,pa:3,played:true,d:'29/06'},
+ {s:'L',h:'Portugal',a:'Croácia',played:false,d:'02/07',t:'20:00'},
+ {s:'L',h:'Espanha',a:'Áustria',played:false,d:'02/07',t:'16:00'},
+ {s:'L',h:'Estados Unidos',a:'Bósnia e Herzegovina',played:false,d:'01/07',t:'21:00'},
+ {s:'L',h:'Bélgica',a:'Senegal',played:false,d:'01/07',t:'17:00'},
+ {s:'R',h:'Brasil',a:'Japão',hs:2,as:1,played:true,d:'29/06'},
+ {s:'R',h:'Costa do Marfim',a:'Noruega',hs:1,as:2,played:true,d:'30/06'},
+ {s:'R',h:'México',a:'Equador',hs:2,as:0,played:true,d:'30/06'},
+ {s:'R',h:'Inglaterra',a:'RD Congo',played:false,d:'01/07',t:'13:00'},
+ {s:'R',h:'Argentina',a:'Cabo Verde',played:false,d:'03/07',t:'19:00'},
+ {s:'R',h:'Austrália',a:'Egito',played:false,d:'03/07',t:'15:00'},
+ {s:'R',h:'Suíça',a:'Argélia',played:false,d:'03/07',t:'00:00'},
+ {s:'R',h:'Colômbia',a:'Gana',played:false,d:'03/07',t:'22:30'},
+];
+/* Calendário das fases seguintes (Brasília). Ordem casa com os pares da chave. */
+const SCHED={
+  r16L:[{d:'04/07',t:'18:00'},{d:'04/07',t:'14:00'},{d:'06/07',t:'16:00'},{d:'06/07',t:'21:00'}],
+  r16R:[{d:'05/07',t:'17:00'},{d:'05/07',t:'21:00'},{d:'07/07',t:'13:00'},{d:'07/07',t:'17:00'}],
+  qfL:[{d:'09/07',t:'17:00'},{d:'10/07',t:'16:00'}],
+  qfR:[{d:'11/07',t:'18:00'},{d:'11/07',t:'22:00'}],
+  sfL:{d:'14/07',t:'16:00'}, sfR:{d:'15/07',t:'16:00'},
+  final:{d:'19/07',t:'16:00'}, third:{d:'18/07',t:'18:00'}
+};
+
+function koWin(m){ if(!m||!m.played) return null;
+  if(m.hs>m.as) return m.h; if(m.as>m.hs) return m.a;
+  if(m.ph!=null&&m.pa!=null) return m.ph>m.pa?m.h:m.a; return null; }
+
+function kotHTML(e){
+  if(e.state==='tbd') return `<div class="kot tbd"><span class="nm">${e.place||'A definir'}</span></div>`;
+  const cls=e.state==='win'?'win':(e.state==='lose'?'lose':'');
+  const clk=e.name?'clickable':'';
+  const click=e.name?`onclick="goToTeam('${jsq(e.name)}')" title="Ver ${e.name} na aba Seleções"`:'';
+  return `<div class="kot ${cls} ${clk}" ${click}>${e.name?flagImg(e.name):''}<span class="nm">${e.name||''}</span><span class="sc">${e.sc||''}</span></div>`;
+}
+function koMatchHTML(a,b,o){o=o||{};
+  const meta=o.meta?`<div class="kmeta">${o.meta}</div>`:'';
+  return `<div class="ko-match ${o.played?'played':''} ${o.pen?'pen':''} ${o.upcoming?'upcoming':''}">${kotHTML(a)}${kotHTML(b)}${meta}</div>`;
+}
+const whenTxt=(m)=> m.t? `${m.d} · ${m.t}` : (m.d||'');
+/* 32-avos: placar (e pênaltis) + classificado destacado; pendentes mostram data · hora */
+function r32HTML(m){
+  const w=koWin(m);
+  const mk=(name,gs,ps)=>({name,sc:m.played?(ps!=null?`${gs} (${ps})`:`${gs}`):'',state:m.played?(w===name?'win':'lose'):'plain'});
+  const meta=m.played?(m.ph!=null?`${m.d} · pênaltis`:m.d):whenTxt(m);
+  return koMatchHTML(mk(m.h,m.hs,m.ph),mk(m.a,m.as,m.pa),{played:m.played,pen:m.ph!=null,upcoming:!m.played,meta});
+}
+/* slot do confronto anterior: vencedor definido, ou placeholder ABBR / ABBR */
+function slot(feeder){
+  const w=koWin(feeder);
+  if(w) return {name:w,state:'plain',sc:''};
+  return {state:'tbd',place:`${ABBR[feeder.h]||'?'} / ${ABBR[feeder.a]||'?'}`};
+}
+/* 16-avos: usa vencedores dos 32-avos; sempre mostra data · hora oficial */
+function r16HTML(f1,f2,sc){
+  const a=slot(f1),b=slot(f2);
+  const both=a.state!=='tbd'&&b.state!=='tbd';
+  return koMatchHTML(a,b,{meta: whenTxt(sc), upcoming:both});
+}
+/* quartas/semi: times ainda indefinidos, mas com data · hora */
+function laterHTML(sc){
+  return koMatchHTML({state:'tbd',place:'A definir'},{state:'tbd',place:'A definir'},{meta:whenTxt(sc)});
+}
+
+function renderKO(){
+  const L=R32.filter(m=>m.s==='L'), R=R32.filter(m=>m.s==='R');
+  const col=(label,inner)=>`<div class="round"><div class="round-label">${label}</div><div class="round-body">${inner}</div></div>`;
+  const r32L=L.map(r32HTML).join(''), r32R=R.map(r32HTML).join('');
+  const pairs=a=>[[a[0],a[1]],[a[2],a[3]],[a[4],a[5]],[a[6],a[7]]];
+  const r16L=pairs(L).map((p,i)=>r16HTML(p[0],p[1],SCHED.r16L[i])).join('');
+  const r16R=pairs(R).map((p,i)=>r16HTML(p[0],p[1],SCHED.r16R[i])).join('');
+  const qfL=SCHED.qfL.map(laterHTML).join(''), qfR=SCHED.qfR.map(laterHTML).join('');
+  const sfL=laterHTML(SCHED.sfL), sfR=laterHTML(SCHED.sfR);
+  const leftHalf=`<div class="half left">
+    ${col('32-avos',r32L)}${col('16-avos',r16L)}${col('Quartas',qfL)}${col('Semi',sfL)}</div>`;
+  const center=`<div class="center">
+    <div class="ko-trophy">🏆</div>
+    <div class="ko-final"><div class="lbl">FINAL</div><div class="sub">${SCHED.final.d} · ${SCHED.final.t}</div></div>
+    <div class="ko-third">3º LUGAR · ${SCHED.third.d} · ${SCHED.third.t}</div></div>`;
+  const rightHalf=`<div class="half right">
+    ${col('Semi',sfR)}${col('Quartas',qfR)}${col('16-avos',r16R)}${col('32-avos',r32R)}</div>`;
+  document.getElementById('bracket').innerHTML=leftHalf+center+rightHalf;
+}
+
 /* ---------- Filtros & abas ---------- */
 document.getElementById('groupChips').innerHTML =
   `<button class="chip on" data-f="group" data-v="all">Todos</button>` +
@@ -675,7 +836,7 @@ document.querySelector('nav.tabs').addEventListener('click', e=>{
 });
 
 /* ---------- Init ---------- */
-renderKPIs(); renderMatches(); renderGroups(); renderScorers(); renderTeamView();
+renderKPIs(); renderMatches(); renderGroups(); renderScorers(); renderTeamView(); renderKO();
 </script>
 </body>
 </html>
