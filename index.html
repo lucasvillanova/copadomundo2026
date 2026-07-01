@@ -173,6 +173,7 @@ nav.tabs{display:flex;gap:6px;margin:26px 0 20px;flex-wrap:wrap}
 .status.done{color:var(--muted);border:1px solid var(--line)}
 .status.next{color:var(--accent);border:1px solid rgba(43,89,224,.30);background:rgba(43,89,224,.07)}
 .gtag{position:absolute;top:10px;left:14px;font-family:"Archivo";font-weight:800;font-size:10px;letter-spacing:.1em;color:var(--muted-2)}
+.gtag.ko{color:var(--accent)}
 .winner{color:var(--chalk)}.dim{color:var(--muted)}
 .scorers{grid-column:1/-1;margin-top:11px;padding-top:11px;border-top:1px dashed var(--line-soft);
   display:grid;grid-template-columns:1fr 1fr;gap:6px 18px;font-size:12.5px;color:var(--muted)}
@@ -393,7 +394,7 @@ tbody tr.third{box-shadow:inset 3px 0 0 var(--muted-2)}
   </section>
 
   <div class="foot">
-    <b>Fontes:</b> relatórios oficiais da FIFA, Wikipédia (2026 FIFA World Cup) e veículos esportivos — fase de grupos completa e conferida (72 jogos, 215 gols, todos com autor); mata-mata a partir dos 32-avos com datas e horários oficiais de Brasília. Bandeiras: flagcdn.com.<br>
+    <b>Fontes:</b> relatórios oficiais da FIFA, Wikipédia (2026 FIFA World Cup) e veículos esportivos — 72 jogos de grupos + 7 de mata-mata já disputados (231 gols, todos com autor); jogos e gols aparecem também na aba Seleções e contam na artilharia. Chaveamento com datas e horários oficiais de Brasília. Bandeiras: flagcdn.com.<br>
     <b>Como atualizar:</b> a cada dia, basta acrescentar os jogos no bloco <code>MATCHES</code> do código (placar + gols). Classificação, saldo, pontos, total de gols e artilharia se recalculam sozinhos.<br>
     <b>Programação:</b> fase de grupos completa (1ª a 3ª rodada), com data, horário de Brasília e estádio conforme a tabela oficial da FIFA. Madrugadas brasileiras aparecem como 00h/01h.
   </div>
@@ -454,9 +455,9 @@ const MATCHES = [
   {g:"C",date:"2026-06-13",dl:"Sábado · 13 jun",venue:"New York/New Jersey Stadium (MetLife)",home:"Brasil",away:"Marrocos",played:true,hs:1,as:1,goals:[{t:"a",p:"Ismael Saibari",m:"21'"},{t:"h",p:"Vinícius Júnior",m:"32'"}]},
   {g:"C",date:"2026-06-13",dl:"Sábado · 13 jun",venue:"Boston Stadium (Gillette)",home:"Escócia",away:"Haiti",played:true,hs:1,as:0,goals:[{t:"h",p:"John McGinn",m:"28'"}]},
   {g:"D",date:"2026-06-13",dl:"Sábado · 13 jun",venue:"BC Place · Vancouver",home:"Austrália",away:"Turquia",played:true,hs:2,as:0,goals:[{t:"h",p:"Irankunda",m:"27'"},{t:"h",p:"Metcalfe",m:"2ºT"}]},
-  {g:"E",date:"2026-06-14",dl:"Domingo · 14 jun",venue:"Houston Stadium (NRG)",home:"Alemanha",away:"Curaçao",played:true,hs:7,as:1,goals:[{t:"h",p:"F. Nmecha",m:"6'"},{t:"a",p:"Comenencia",m:"21'"},{t:"h",p:"Schlotterbeck",m:"38'"},{t:"h",p:"Havertz",m:"45'+5 (p)"},{t:"h",p:"Musiala",m:"47'"},{t:"h",p:"N. Brown",m:"68'"},{t:"h",p:"Undav",m:"78'"},{t:"h",p:"Havertz",m:"88'"}]},
+  {g:"E",date:"2026-06-14",dl:"Domingo · 14 jun",venue:"Houston Stadium (NRG)",home:"Alemanha",away:"Curaçao",played:true,hs:7,as:1,goals:[{t:"h",p:"F. Nmecha",m:"6'"},{t:"a",p:"Comenencia",m:"21'"},{t:"h",p:"Schlotterbeck",m:"38'"},{t:"h",p:"Kai Havertz",m:"45'+5 (p)"},{t:"h",p:"Musiala",m:"47'"},{t:"h",p:"N. Brown",m:"68'"},{t:"h",p:"Undav",m:"78'"},{t:"h",p:"Kai Havertz",m:"88'"}]},
   {g:"F",date:"2026-06-14",dl:"Domingo · 14 jun",venue:"Dallas Stadium (AT&T)",home:"Holanda",away:"Japão",played:true,hs:2,as:2,goals:[{t:"h",p:"Van Dijk",m:"51'"},{t:"a",p:"Nakamura",m:"57'"},{t:"h",p:"Summerville",m:"64'"},{t:"a",p:"Daichi Kamada",m:"89'"}]},
-  {g:"E",date:"2026-06-14",dl:"Domingo · 14 jun",venue:"Philadelphia Stadium",home:"Costa do Marfim",away:"Equador",played:true,hs:1,as:0,goals:[{t:"h",p:"Diallo",m:"90'"}]},
+  {g:"E",date:"2026-06-14",dl:"Domingo · 14 jun",venue:"Philadelphia Stadium",home:"Costa do Marfim",away:"Equador",played:true,hs:1,as:0,goals:[{t:"h",p:"Amad Diallo",m:"90'"}]},
   {g:"F",date:"2026-06-14",dl:"Domingo · 14 jun",venue:"Estádio Monterrey (BBVA)",home:"Suécia",away:"Tunísia",played:true,hs:5,as:1,goals:[{t:"h",p:"Ayari",m:"6'"},{t:"h",p:"Alexander Isak",m:"30'"},{t:"a",p:"Rekik",m:"42'"},{t:"h",p:"Gyökeres",m:"59'"},{t:"h",p:"Svanberg",m:"84'"},{t:"h",p:"Ayari",m:"90'+"}]},
   {g:"H",date:"2026-06-15",dl:"Segunda · 15 jun",venue:"Atlanta Stadium",home:"Espanha",away:"Cabo Verde",played:true,hs:0,as:0,goals:[]},
   {g:"G",date:"2026-06-15",dl:"Segunda · 15 jun",venue:"Seattle Stadium",home:"Bélgica",away:"Egito",played:true,hs:1,as:1,goals:[{t:"a",p:"Emam Ashour",m:"19'"},{t:"h",p:"Mohamed Hany",m:"2ºT",og:true}],note:"Gol da Bélgica foi gol contra de Mohamed Hany (Egito), no início do 2º tempo."},
@@ -517,7 +518,14 @@ const MATCHES = [
   {g:"K",date:"2026-06-27",dl:"Sábado · 27 jun",venue:"Miami Stadium",home:"Colômbia",away:"Portugal",played:true,hs:0,as:0,goals:[]},
   {g:"K",date:"2026-06-27",dl:"Sábado · 27 jun",venue:"Atlanta Stadium",home:"RD Congo",away:"Uzbequistão",played:true,hs:3,as:1,goals:[{t:"a",p:"Eldor Shomurodov",m:"10'"},{t:"h",p:"Yoane Wissa",m:"68'"},{t:"h",p:"Fiston Mayele",m:"78'"},{t:"h",p:"Yoane Wissa",m:"90'+1"}]},
   {g:"J",date:"2026-06-27",dl:"Sábado · 27 jun",venue:"Kansas City Stadium",home:"Argélia",away:"Áustria",played:true,hs:3,as:3,goals:[{t:"a",p:"Marko Arnautović",m:"28'"},{t:"h",p:"Rafik Belghali",m:"45'"},{t:"a",p:"Marcel Sabitzer",m:"55'"},{t:"h",p:"Riyad Mahrez",m:"60'"},{t:"h",p:"Riyad Mahrez",m:"90'+3"},{t:"a",p:"Saša Kalajdžić",m:"90'+6"}]},
-  {g:"J",date:"2026-06-27",dl:"Sábado · 27 jun",venue:"Dallas Stadium (AT&T)",home:"Jordânia",away:"Argentina",played:true,hs:1,as:3,goals:[{t:"a",p:"Giovani Lo Celso",m:"1ºT"},{t:"a",p:"Lautaro Martínez",m:"31' (pên)"},{t:"h",p:"Mousa Al-Taamari",m:"55'"},{t:"a",p:"Lionel Messi",m:"80'"}]}
+  {g:"J",date:"2026-06-27",dl:"Sábado · 27 jun",venue:"Dallas Stadium (AT&T)",home:"Jordânia",away:"Argentina",played:true,hs:1,as:3,goals:[{t:"a",p:"Giovani Lo Celso",m:"1ºT"},{t:"a",p:"Lautaro Martínez",m:"31' (pên)"},{t:"h",p:"Mousa Al-Taamari",m:"55'"},{t:"a",p:"Lionel Messi",m:"80'"}]},
+  {g:"KO",ph:"32-avos",date:"2026-06-28",dl:"Domingo · 28 jun",venue:"Los Angeles Stadium",home:"África do Sul",away:"Canadá",played:true,hs:0,as:1,goals:[{t:"a",p:"Stephen Eustáquio",m:"90'+2"}]},
+  {g:"KO",ph:"32-avos",date:"2026-06-29",dl:"Segunda · 29 jun",venue:"NRG Stadium · Houston",home:"Brasil",away:"Japão",played:true,hs:2,as:1,goals:[{t:"a",p:"Kaishu Sano",m:"29'"},{t:"h",p:"Casemiro",m:"56'"},{t:"h",p:"Gabriel Martinelli",m:"90'+5"}]},
+  {g:"KO",ph:"32-avos",date:"2026-06-29",dl:"Segunda · 29 jun",venue:"Gillette Stadium · Boston",home:"Alemanha",away:"Paraguai",played:true,hs:1,as:1,goals:[{t:"h",p:"Kai Havertz",m:"2ºT"},{t:"a",p:"Julio Enciso",m:"1ºT"}],note:"Paraguai venceu nos pênaltis (4-3); o goleiro Gill defendeu de Havertz e Woltemade."},
+  {g:"KO",ph:"32-avos",date:"2026-06-29",dl:"Segunda · 29 jun",venue:"Estádio Monterrey",home:"Holanda",away:"Marrocos",played:true,hs:1,as:1,goals:[{t:"h",p:"Cody Gakpo",m:"71'"},{t:"a",p:"Issa Diop",m:"90'+3"}],note:"Marrocos venceu nos pênaltis (3-2); Bono defendeu e Kluivert e J. Timber perderam."},
+  {g:"KO",ph:"32-avos",date:"2026-06-30",dl:"Terça · 30 jun",venue:"AT&T Stadium · Dallas",home:"Costa do Marfim",away:"Noruega",played:true,hs:1,as:2,goals:[{t:"a",p:"Antonio Nusa",m:"39'"},{t:"h",p:"Amad Diallo",m:"73'"},{t:"a",p:"Erling Haaland",m:"85'"}]},
+  {g:"KO",ph:"32-avos",date:"2026-06-30",dl:"Terça · 30 jun",venue:"MetLife Stadium · Nova Jersey",home:"França",away:"Suécia",played:true,hs:3,as:0,goals:[{t:"h",p:"Mbappé",m:"45'"},{t:"h",p:"Barcola",m:"52'"},{t:"h",p:"Mbappé",m:"74'"}]},
+  {g:"KO",ph:"32-avos",date:"2026-06-30",dl:"Terça · 30 jun",venue:"Estádio Akron · Guadalajara",home:"México",away:"Equador",played:true,hs:2,as:0,goals:[{t:"h",p:"Santiago Giménez",m:"1ºT"},{t:"h",p:"Raúl Jiménez",m:"2ºT"}]}
 ];
 
 /* ============================================================================
@@ -618,7 +626,7 @@ function matchCard(m){
   const noteHTML = m.note? `<div class="note">⚠️ ${m.note}</div>`:'';
   const venueHTML = m.venue && m.venue!=='—'? `<div class="venue">📍 ${m.venue}</div>`:'';
   return `<div class="match ${m.played?'played':''}">
-    <span class="gtag">GRUPO ${m.g}</span>
+    <span class="gtag${m.ph?' ko':''}">${m.ph?m.ph:'GRUPO '+m.g}</span>
     <div class="side home teamlink" role="button" tabindex="0" title="Ver ${m.home} na aba Seleções" onclick="goToTeam('${jsq(m.home)}')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();goToTeam('${jsq(m.home)}')}">${flagImg(m.home,'flag')}<span class="tname">${m.home}</span></div>
     <div class="center">${centerHTML}</div>
     <div class="side away teamlink" role="button" tabindex="0" title="Ver ${m.away} na aba Seleções" onclick="goToTeam('${jsq(m.away)}')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();goToTeam('${jsq(m.away)}')}">${flagImg(m.away,'flag')}<span class="tname">${m.away}</span></div>
@@ -659,7 +667,7 @@ function renderScorers(){
       <div class="goals"><div class="bar"><i style="width:${(s.g/max*100)}%"></i></div>
         <div class="gc">${s.g}<small>${s.g===1?'gol':'gols'}</small></div></div></div>`).join('');
   document.getElementById('scorerNote').textContent =
-    "Artilharia completa e verificada em toda a fase de grupos (72 jogos). Gols contra não contam. Líder: Messi (6); na sequência, Mbappé, Haaland, Vini Jr. e Dembélé (4).";
+    "Artilharia completa e verificada: fase de grupos + 32-avos já disputados. Gols contra não contam. Líderes: Messi e Mbappé (6); Haaland (5); Vini Jr. e Dembélé (4).";
 }
 
 /* ---------- Seleções (aba por time) ---------- */
